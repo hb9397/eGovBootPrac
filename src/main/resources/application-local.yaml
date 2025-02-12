@@ -1,0 +1,19 @@
+server:
+  servlet:
+    context-path: /
+  port: 8081
+
+  # mybatis 설정
+mybatis:
+  # 매퍼 xml의 위치-classpath:/ 리소스 폴더의 하위를 나타냄
+  mapper-locations: classpath:/egovframework/mapper/**/*.xml
+  # 단축명으로 사용할 클래스의 패키지명
+  type-aliases-package: com.siso.web.*.model
+  configuration:
+    map-underscore-to-camel-case: false
+    default-fetch-size: 3000
+    default-statement-timeout: 60
+    jdbc-type-for-null: "NULL"   # null 에러 
+    
+cors:
+  allowed-origin: "http://localhost:3000"  # 허용할 Origin 설정
