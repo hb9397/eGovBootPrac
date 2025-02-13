@@ -3,6 +3,7 @@ package egovframework.com.cmm.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
@@ -29,6 +30,7 @@ import org.egovframe.rte.fdl.string.EgovObjectUtil;
  * </pre>
  */
 
+@Log4j2
 public class EgovUserDetailsHelper {
 
 		/**
@@ -63,7 +65,7 @@ public class EgovUserDetailsHelper {
 		 */
 		public static Boolean isAuthenticated() {
 			if (EgovObjectUtil.isNull(RequestContextHolder.getRequestAttributes().getAttribute("LoginVO", RequestAttributes.SCOPE_SESSION))) {
-				// log.debug("## authentication object is null!!");
+				log.debug("## authentication object is null!!");
 				return Boolean.FALSE;
 			}
 			return Boolean.TRUE;

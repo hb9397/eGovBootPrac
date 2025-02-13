@@ -45,10 +45,11 @@ public class SimpleCORSFilter implements Filter {
 	@Value("${cors.allowed-origin}") 
 	private String allowedOrigin;
 
+
+
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
 		throws IOException, ServletException {
-
 		log.debug("===>>> SimpleCORSFilter > doFilter()");
 		HttpServletRequest request = (HttpServletRequest)req;
 		HttpServletResponse response = (HttpServletResponse)res;
@@ -80,6 +81,8 @@ public class SimpleCORSFilter implements Filter {
 		// Access-Control-Allow-Headers
 		response.setHeader("Access-Control-Allow-Headers",
 			"Origin, X-Requested-With, Content-Type, Accept, " + "X-CSRF-TOKEN");
+
+		//response.setStatus(HttpServletResponse.SC_OK);
 
 		chain.doFilter(req, res);
 	}
