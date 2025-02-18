@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ExcPerRepMngtDAO">
+
+    <!-- 수행실적신고 관리 목록 아이템   -->
+    <resultMap id="excPerRep" type="egovframework.let.epr.service.vo.ReqExcPerRepVO">
+        <result property="excPerRepSeq" column="EXC_PER_REP_SEQ" />
+        <result property="excPerRepName" column="EXC_PER_REP_NAME" />
+        <result property="progrsStatCode" column="PROGRS_STAT_CODE" />
+        <result property="progrsStatName" column="PROGRS_STAT_NAME" />
+        <result property="excDate" column="EXC_DATE" />
+        <result property="regDate" column="REG_DATE" />
+        <result property="regID" column="REG_ID" />
+        <result property="cngDate" column="CNG_DATE" />
+        <result property="cngID" column="CNG_ID" />
+    </resultMap>
+
+    <!-- 수행실적신고 관리 목록 검색 조건   -->
+    <sql id="searchChkExcPerRepList">
+        AND DEL_DATE IS NULL
+        <if test="searchExcPerRepName != null and searchExcPerRepName !=''">
+            AND EXC_PER_REP_NAME LIKE '%' || #{searchExcPerRepName} || '%'
+        </if>
+        <if test="searchExcDate != null and searchExcDate != ''">
+            AND TO_CHAR(EXC_DATE, 'YYYY') = #{searchExcDate}
+        </if>
+    </sql>
+
+    <!-- 수행실적신고관리 데이터 카운트 -->
+    <select id="selectExcPerRepListTotCnt" parameterType="egovframework.let.epr.service.vo.ReqExcPerRepVO" resultType="int">
+        SELECT COUNT(EXC_PER_REP_SEQ)
+        FROM TB_EXC_REC_REP
+        WHERE 1=1
+        <include refid="searchChkExcPerRepList" />
+    </select>
+
+    <select id="selectExcPerRepList"
+            parameterType="egovframework.let.epr.service.vo.ReqExcPerRepVO"
+            resultMap="excPerRep">
+        SELECT
+        *
+        FROM (
+            SELECT
+                rownum rn,
+                TB.*
+            FROM (
+                    SELECT
+                        EXC_PER_REP_SEQ,
+                        EXC_PER_REP_NAME,
+                        PROGRS_STAT_CODE,
+                        (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = PROGRS_STAT_CODE AND CODE_ID = 'PMS001') AS PROGRS_STAT_NAME,
+                        TO_CHAR(EXC_DATE, 'YYYY') AS EXC_DATE,
+                        TO_CHAR(REG_DATE, 'YYYY-MM-DD') AS REG_DATE,
+                        REG_ID,
+                        TO_CHAR(CNG_DATE, 'YYYY-MM-DD') AS CNG_DATE,
+                        CNG_ID
+                    FROM TB_EXC_REC_REP
+                    WHERE 1=1
+                    <include refid="searchChkExcPerRepList" />
+                    ORDER BY EXC_DATE DESC
+                ) TB
+            )
+        WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+    </select>
+
+</mapper>
