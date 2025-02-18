@@ -54,4 +54,19 @@ public class ExcPerRepController {
 
         return resultVO;
     }
+
+    @PostMapping("/insertExcPerRep.do")
+    @ResponseBody
+    public ResultVO insertExcPerRep(@RequestBody ReqExcPerRepVO reqExcPerRepVO) throws Exception{
+        ResultVO resultVO = new ResultVO();
+
+        LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+        excPerRepMngtService.insertExcPerRep(reqExcPerRepVO);
+
+        resultVO.setResultCode(ResponseCode.SUCCESS.getCode());
+        resultVO.setResultMessage(ResponseCode.SUCCESS.getMessage());
+
+        return resultVO;
+    }
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository("eprExcPerRepMngtDAO")
+@Repository("ExcPerRepMngtDAO")
 public class ExcPerRepMngtDAO extends EgovComAbstractDAO {
 
     public int selectExcPerRepMngtListTotCnt(ReqExcPerRepVO reqExcPerRepVO)  throws Exception {
@@ -18,4 +18,7 @@ public class ExcPerRepMngtDAO extends EgovComAbstractDAO {
         return selectList("ExcPerRepMngtDAO.selectExcPerRepList", reqExcPerRepVO);
     }
 
+    public void insertExcPerRep(ReqExcPerRepVO reqExcPerRepVO) throws Exception{
+        insert("ExcPerRepMngtDAO.insertExcPerRep", reqExcPerRepVO);
+    }
 }

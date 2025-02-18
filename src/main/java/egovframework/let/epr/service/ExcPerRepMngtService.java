@@ -10,4 +10,6 @@ public interface ExcPerRepMngtService {
     public int selectExcPerRepListTotCnt(ReqExcPerRepVO reqExcPerRepVO) throws Exception;
 
     public List<ResExcPerRepVO> selectExcPerRepList(ReqExcPerRepVO reqExcPerRepVO) throws Exception;
+
+    public void insertExcPerRep(ReqExcPerRepVO reqExcPerRepVO) throws Exception;
 }

@@ -64,4 +64,29 @@
         WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
     </select>
 
+    <!-- 수행실적 신고 등록 -->
+    <insert id="insertExcPerRep"
+            parameterType="egovframework.let.epr.service.vo.ReqExcPerRepVO">
+        INSERT INTO TB_EXC_REC_REP
+        ( EXC_PER_REP_SEQ
+        , EXC_DATE
+        , EXC_PER_REP_NAME
+        , PROGRS_STAT_CODE
+        , REG_DATE
+        , CNG_DATE)
+        VALUES (
+                CASE
+                    <![CDATA[
+                        WHEN EXC_PER_REP_SEQ.NEXTVAL <= (SELECT MAX(EXC_PER_REP_SEQ) FROM TB_EXC_REC_REP)
+                        THEN (SELECT MAX(EXC_PER_REP_SEQ) FROM TB_EXC_REC_REP) + 1
+                        ELSE EXC_PER_REP_SEQ.NEXTVAL
+                    ]]>
+                END
+               , TO_DATE(#{excDate}, 'YYYY')
+               , #{excPerRepName}
+               , '0001'
+               , SYSDATE
+               , SYSDATE)
+    </insert>
+
 </mapper>

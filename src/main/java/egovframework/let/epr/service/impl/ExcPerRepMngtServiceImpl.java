@@ -24,4 +24,9 @@ public class ExcPerRepMngtServiceImpl extends EgovAbstractServiceImpl implements
     public List<ResExcPerRepVO> selectExcPerRepList(ReqExcPerRepVO reqExcPerRepVO) throws Exception {
         return excPerRepMngtDAO.selectExcPerRepMngtList(reqExcPerRepVO);
     }
+
+    @Override
+    public void insertExcPerRep(ReqExcPerRepVO reqExcPerRepVO) throws Exception {
+        excPerRepMngtDAO.insertExcPerRep(reqExcPerRepVO);
+    }
 }
