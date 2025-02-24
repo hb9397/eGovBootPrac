@@ -5,5 +5,6 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class ResExcPerRepVO extends ExcPerRep {
+public class ResEqpmnRepVO extends EqpmnRep {
+
 }

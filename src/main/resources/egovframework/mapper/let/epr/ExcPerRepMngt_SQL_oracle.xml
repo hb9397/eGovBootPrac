@@ -38,29 +38,26 @@
     <select id="selectExcPerRepList"
             parameterType="egovframework.let.epr.service.vo.ReqExcPerRepVO"
             resultMap="excPerRep">
-        SELECT
-        *
-        FROM (
-            SELECT
-                rownum rn,
-                TB.*
-            FROM (
-                    SELECT
-                        EXC_PER_REP_SEQ,
-                        EXC_PER_REP_NAME,
-                        PROGRS_STAT_CODE,
-                        (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = PROGRS_STAT_CODE AND CODE_ID = 'PMS001') AS PROGRS_STAT_NAME,
-                        TO_CHAR(EXC_DATE, 'YYYY') AS EXC_DATE,
-                        TO_CHAR(REG_DATE, 'YYYY-MM-DD') AS REG_DATE,
-                        REG_ID,
-                        TO_CHAR(CNG_DATE, 'YYYY-MM-DD') AS CNG_DATE,
-                        CNG_ID
-                    FROM TB_EXC_REC_REP
-                    WHERE 1=1
-                    <include refid="searchChkExcPerRepList" />
-                    ORDER BY EXC_DATE DESC
-                ) TB
-            )
+        SELECT * FROM
+        (
+            SELECT rownum rn, TB.* FROM
+            (
+                SELECT
+                EXC_PER_REP_SEQ
+                , EXC_PER_REP_NAME
+                , PROGRS_STAT_CODE
+                , (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = PROGRS_STAT_CODE AND CODE_ID = 'PMS001') AS PROGRS_STAT_NAME
+                , TO_CHAR(EXC_DATE, 'YYYY') AS EXC_DATE
+                , TO_CHAR(REG_DATE, 'YYYY-MM-DD') AS REG_DATE
+                , REG_ID
+                , TO_CHAR(CNG_DATE, 'YYYY-MM-DD') AS CNG_DATE
+                , CNG_ID
+                FROM TB_EXC_REC_REP
+                WHERE 1=1
+                <include refid="searchChkExcPerRepList" />
+                ORDER BY EXC_DATE DESC
+            ) TB
+        )
         WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
     </select>
 
@@ -83,4 +80,124 @@
                , SYSDATE)
     </insert>
 
+    <!-- 수행실적 신고 상세 조회 시작 -->
+
+    <!-- 수행실적 신고 상세 조회 목록 검색 조건   -->
+    <sql id="searchChkExcPerRepDetailList">
+        AND DEL_DATE IS NULL
+        AND EXC_PER_REP_SEQ = #{searchExcPerRepSeq}
+    </sql>
+
+    <!-- 수행실적 신고 상세(장비) 아이템 -->
+    <resultMap id="eqpmnRep" type="egovframework.let.epr.service.vo.ResEqpmnRepVO">
+        <result property="excPerRepSeq" column="EXC_PER_REP_SEQ" />
+        <result property="eqpmnNo" column="EQPMN_NO" />
+        <result property="eqpmnName" column="EQPMN_NAME" />
+        <result property="stndrd" column="STNDRD" />
+        <result property="regNo" column="REG_NO" />
+        <result property="gradeCode" column="GRAD_CODE" />
+        <result property="gradeName" column="GRADE_NAME" />
+        <result property="regDate" column="REG_DATE" />
+        <result property="regId" column="REG_ID" />
+        <result property="cngDate" column="CNG_DATE" />
+        <result property="cngId" column="CNG_ID" />
+        <result property="delDate" column="DEL_DATE" />
+        <result property="delId" column="DEL_ID" />
+    </resultMap>
+
+    <!-- 수행실적 신고 상세(장비) 카운트 -->
+    <select id="selectEqpmnRepListTotCnt" resultType="int">
+        SELECT
+        COUNT(EQPMN_NO) totcnt
+        FROM TB_EQPMN_REP
+        WHERE 1=1
+        <include refid="searchChkExcPerRepDetailList" />
+    </select>
+
+    <!-- 수행실적 신고상세(장비) 조회 -->
+    <select id="selectEqpmnRepList" parameterType="egovframework.let.epr.service.vo.ReqExcPerRepDetailVO" resultMap="eqpmnRep">
+        SELECT * FROM
+        (
+            SELECT rownum rn, TB.* FROM
+            (
+                SELECT
+                EXC_PER_REP_SEQ
+                , EQPMN_NO
+                , EQPMN_NAME
+                , STNDRD
+                , REG_NO
+                , GRAD_CODE
+                , (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = GRAD_CODE AND CODE_ID = 'PMS002') AS GRADE_NAME
+                , TO_CHAR(REG_DATE, 'YYYY-MM-DD') as REG_DATE
+                , REG_ID
+                , TO_CHAR(CNG_DATE, 'YYYY-MM-DD') as CNG_DATE
+                , CNG_ID
+                , TO_CHAR(DEL_DATE, 'YYYY-MM-DD') as DEL_DATE
+                , DEL_ID
+                FROM TB_EQPMN_REP ter
+                WHERE 1=1
+                <include refid="searchChkExcPerRepDetailList" />
+                ORDER BY REG_DATE DESC
+            ) TB
+        )
+        WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+    </select>
+
+    <!-- 수행실적 신고 상세(실적) 조회 아이템 -->
+    <resultMap id="perRep" type="egovframework.let.epr.service.vo.ResPerRepVO">
+        <result property="excPerRepSeq" column="EXC_PER_REP_SEQ" />
+        <result property="perNo" column="PER_NO" />
+        <result property="servcName" column="SERVC_NAME" />
+        <result property="servcSeCode" column="SERVC_SE_CODE" />
+        <result property="servcSeName" column="SERVC_SE_NAME" />
+        <result property="cntrctAmount" column="CNTRCT_AMOUNT" />
+        <result property="chargerName" column="CHARGER_NAME" />
+        <result property="servc" column="SERVC" />
+        <result property="regDate" column="REG_DATE" />
+        <result property="regId" column="REG_ID" />
+        <result property="cngDate" column="CNG_DATE" />
+        <result property="cngId" column="CNG_ID" />
+        <result property="delDate" column="DEL_DATE" />
+        <result property="delId" column="DEL_ID" />
+    </resultMap>
+
+    <!-- 수행실적 신고 상세(실적) 조회 카운트 -->
+    <select id="selectPerRepListTotCnt" resultType="int">
+        SELECT
+        COUNT(PER_NO) totcnt
+        FROM TB_PER_REP
+        WHERE 1=1
+        <include refid="searchChkExcPerRepDetailList" />
+    </select>
+
+    <!-- 수행실적 신고 상세(실적) 조회 -->
+    <select id="selectPerRepList" parameterType="egovframework.let.epr.service.vo.ReqExcPerRepDetailVO" resultMap="perRep">
+        SELECT * FROM
+            (
+                SELECT rownum rn, TB.* FROM
+                (
+                    SELECT
+                    EXC_PER_REP_SEQ
+                    , PER_NO
+                    , SERVC_NAME
+                    , SERVC_SE_CODE
+                    , (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = SERVC_SE_CODE AND CODE_ID = 'PMS003') AS SERVC_SE_NAME
+                    , CNTRCT_AMOUNT
+                    , CHARGER_NAME
+                    , SERVC
+                    , TO_CHAR(REG_DATE, 'YYYY-MM-DD') as REG_DATE
+                    , REG_ID
+                    , TO_CHAR(CNG_DATE, 'YYYY-MM-DD') as CNG_DATE
+                    , CNG_ID
+                    , TO_CHAR(DEL_DATE, 'YYYY-MM-DD') as DEL_DATE
+                    , DEL_ID
+                    FROM TB_PER_REP
+                    WHERE 1=1
+                    <include refid="searchChkExcPerRepDetailList" />
+                    ORDER BY REG_DATE DESC
+                ) TB
+            )
+        WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+    </select>
+    <!-- 수행실적 신고 상세 조회 끝-->
 </mapper>
