@@ -57,12 +57,12 @@ public class ExcPerRepController {
 
     @PostMapping("/insertExcPerRep.do")
     @ResponseBody
-    public ResultVO insertExcPerRep(@RequestBody ReqExcPerRepVO reqExcPerRepVO) throws Exception{
+    public ResultVO insertExcPerRep(@RequestBody ReqExcPerRepVO createData) throws Exception{
         ResultVO resultVO = new ResultVO();
 
         LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-        excPerRepMngtService.insertExcPerRep(reqExcPerRepVO);
+        excPerRepMngtService.insertExcPerRep(createData);
 
         resultVO.setResultCode(ResponseCode.SUCCESS.getCode());
         resultVO.setResultMessage(ResponseCode.SUCCESS.getMessage());

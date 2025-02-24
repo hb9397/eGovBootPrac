@@ -75,13 +75,7 @@
         , REG_DATE
         , CNG_DATE)
         VALUES (
-                CASE
-                    <![CDATA[
-                        WHEN EXC_PER_REP_SEQ.NEXTVAL <= (SELECT MAX(EXC_PER_REP_SEQ) FROM TB_EXC_REC_REP)
-                        THEN (SELECT MAX(EXC_PER_REP_SEQ) FROM TB_EXC_REC_REP) + 1
-                        ELSE EXC_PER_REP_SEQ.NEXTVAL
-                    ]]>
-                END
+                EXC_PER_REP_SEQ.NEXTVAL
                , TO_DATE(#{excDate}, 'YYYY')
                , #{excPerRepName}
                , '0001'
