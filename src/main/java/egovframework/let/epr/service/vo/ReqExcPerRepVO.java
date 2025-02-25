@@ -1,11 +1,12 @@
 package egovframework.let.epr.service.vo;
 
 import egovframework.let.epr.util.pagination.PageableVO;
+import egovframework.let.epr.util.user.Auditable;
 import lombok.*;
 
 @Getter
 @Setter
-public class ReqExcPerRepVO extends ExcPerRep implements PageableVO {
+public class ReqExcPerRepVO extends ExcPerRep implements PageableVO, Auditable {
     /** 검색 키워드 **/
     private String searchExcPerRepName;
 
@@ -35,6 +36,5 @@ public class ReqExcPerRepVO extends ExcPerRep implements PageableVO {
 
     /** 레코드 번호 */
     private int rowNo = 0;
-
     /*** 페이지 네이션 끝 ***/
 }

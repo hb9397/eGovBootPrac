@@ -11,9 +11,9 @@
         <result property="progrsStatName" column="PROGRS_STAT_NAME" />
         <result property="excDate" column="EXC_DATE" />
         <result property="regDate" column="REG_DATE" />
-        <result property="regID" column="REG_ID" />
+        <result property="regId" column="REG_ID" />
         <result property="cngDate" column="CNG_DATE" />
-        <result property="cngID" column="CNG_ID" />
+        <result property="cngId" column="CNG_ID" />
     </resultMap>
 
     <!-- 수행실적신고 관리 목록 검색 조건   -->
@@ -85,7 +85,7 @@
     <!-- 수행실적 신고 상세 조회 목록 검색 조건   -->
     <sql id="searchChkExcPerRepDetailList">
         AND DEL_DATE IS NULL
-        AND EXC_PER_REP_SEQ = #{searchExcPerRepSeq}
+        AND EXC_PER_REP_SEQ = #{inquiryExcPerRepSeq}
     </sql>
 
     <!-- 수행실적 신고 상세(장비) 아이템 -->
@@ -101,8 +101,6 @@
         <result property="regId" column="REG_ID" />
         <result property="cngDate" column="CNG_DATE" />
         <result property="cngId" column="CNG_ID" />
-        <result property="delDate" column="DEL_DATE" />
-        <result property="delId" column="DEL_ID" />
     </resultMap>
 
     <!-- 수행실적 신고 상세(장비) 카운트 -->
@@ -132,8 +130,6 @@
                 , REG_ID
                 , TO_CHAR(CNG_DATE, 'YYYY-MM-DD') as CNG_DATE
                 , CNG_ID
-                , TO_CHAR(DEL_DATE, 'YYYY-MM-DD') as DEL_DATE
-                , DEL_ID
                 FROM TB_EQPMN_REP ter
                 WHERE 1=1
                 <include refid="searchChkExcPerRepDetailList" />
@@ -157,8 +153,6 @@
         <result property="regId" column="REG_ID" />
         <result property="cngDate" column="CNG_DATE" />
         <result property="cngId" column="CNG_ID" />
-        <result property="delDate" column="DEL_DATE" />
-        <result property="delId" column="DEL_ID" />
     </resultMap>
 
     <!-- 수행실적 신고 상세(실적) 조회 카운트 -->
@@ -189,8 +183,6 @@
                     , REG_ID
                     , TO_CHAR(CNG_DATE, 'YYYY-MM-DD') as CNG_DATE
                     , CNG_ID
-                    , TO_CHAR(DEL_DATE, 'YYYY-MM-DD') as DEL_DATE
-                    , DEL_ID
                     FROM TB_PER_REP
                     WHERE 1=1
                     <include refid="searchChkExcPerRepDetailList" />

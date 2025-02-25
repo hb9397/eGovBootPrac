@@ -8,6 +8,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.let.epr.service.ExcPerRepMngtService;
 import egovframework.let.epr.service.vo.*;
 import egovframework.let.epr.util.pagination.PaginationUtil;
+import egovframework.let.epr.util.user.UserUtil;
 import lombok.RequiredArgsConstructor;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,8 @@ import java.util.Map;
 @RequestMapping(value = "/api/v1/epr")
 public class ExcPerRepController {
     private final PaginationUtil paginationUtil;
+
+    private final UserUtil userUtil;
 
     private final DefaultBeanValidator defaultBeanValidator;
 
@@ -61,6 +64,8 @@ public class ExcPerRepController {
 
         LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
+        userUtil.setAuditorFieldsCreate(user, createData);
+
         excPerRepMngtService.insertExcPerRep(createData);
 
         resultVO.setResultCode(ResponseCode.SUCCESS.getCode());
@@ -97,16 +102,16 @@ public class ExcPerRepController {
 
     @PostMapping("/perRepList.do")
     @ResponseBody
-    public ResultVO selectPerRepList(@RequestBody ReqExcPerRepDetailVO searchCondition) throws Exception{
+    public ResultVO selectPerRepList(@RequestBody ReqExcPerRepDetailVO inquiryCondition) throws Exception{
         ResultVO resultVO = new ResultVO();
 
         LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
         PaginationInfo paginationInfo = new PaginationInfo();
         int resPerRepListCnt = excPerRepMngtService.selectPerRepListTotCnt();
-        paginationUtil.setPaginationInfo(paginationInfo, resPerRepListCnt, searchCondition);
+        paginationUtil.setPaginationInfo(paginationInfo, resPerRepListCnt, inquiryCondition);
 
-        List<ResPerRepVO> perRepList = excPerRepMngtService.selectPerRepList(searchCondition);
+        List<ResPerRepVO> perRepList = excPerRepMngtService.selectPerRepList(inquiryCondition);
 
         Map<String, Object> resultMap = new HashMap<>();
 

@@ -20,9 +20,13 @@ public class ExcPerRep {
 
     private String regDate;
 
-    private String regID;
+    private String regId;
 
     private String cngDate;
 
-    private String cngID;
+    private String cngId;
+
+    private String delDate;
+
+    private String delId;
 }

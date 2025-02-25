@@ -9,8 +9,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class ReqExcPerRepDetailVO implements PageableVO {
-    /*** 검색 키워드 ***/
-    private int searchExcPerRepSeq;
+    /*** 조회 키워드 ***/
+    private int inquiryExcPerRepSeq;
 
     /*** 페이지 네이션 시작 ***/
     /*** API 의 경우 아래와 같이 Server 에도 기본값을 두고, Front 도 기본값을 두어 테스트에 용이하도록 한다. ***/
