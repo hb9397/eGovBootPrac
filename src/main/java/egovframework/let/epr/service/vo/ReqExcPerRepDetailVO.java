@@ -21,8 +21,8 @@ public class ReqExcPerRepDetailVO implements PageableVO {
     /** 페이지에 표시할 데이터 갯수 */
     private int pageUnit = 5;
 
-    /** 페이지네이션 네비게이트 최대 개수 */
-    private int pageSize = 10;
+    /** 페이지에 표시할 데이터 갯수 */
+    private int pageSize = 5;
 
     /** 첫페이지 인덱스 */
     private int firstIndex = 1;

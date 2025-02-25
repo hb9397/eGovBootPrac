@@ -65,19 +65,27 @@
     <insert id="insertExcPerRep"
             parameterType="egovframework.let.epr.service.vo.ReqExcPerRepVO">
         INSERT INTO TB_EXC_REC_REP
-        ( EXC_PER_REP_SEQ
-        , EXC_DATE
-        , EXC_PER_REP_NAME
-        , PROGRS_STAT_CODE
-        , REG_DATE
-        , CNG_DATE)
-        VALUES (
-                EXC_PER_REP_SEQ.NEXTVAL
-               , TO_DATE(#{excDate}, 'YYYY')
-               , #{excPerRepName}
-               , '0001'
-               , SYSDATE
-               , SYSDATE)
+        (
+            EXC_PER_REP_SEQ
+            , EXC_DATE
+            , EXC_PER_REP_NAME
+            , PROGRS_STAT_CODE
+            , REG_DATE
+            , REG_ID
+            , CNG_DATE
+            , CNG_ID
+        )
+        VALUES
+        (
+            EXC_PER_REP_SEQ.NEXTVAL
+            , TO_DATE(#{excDate}, 'YYYY')
+            , #{excPerRepName}
+            , '0001'
+            , SYSDATE
+            , #{regId}
+            , SYSDATE
+            , #{cngId}
+        )
     </insert>
 
     <!-- 수행실적 신고 상세 조회 시작 -->
@@ -192,4 +200,38 @@
         WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
     </select>
     <!-- 수행실적 신고 상세 조회 끝-->
+
+    <!-- 수행실적 신고 상세 중 장비등록 시작 -->
+    <insert id="insertEqpmnRep" parameterType="egovframework.let.epr.service.vo.ReqEqpmnRepVO">
+        INSERT INTO TB_EQPMN_REP
+        (
+            EXC_PER_REP_SEQ
+            , EQPMN_NO
+            , EQPMN_NAME
+            , REG_NO
+            , STNDRD
+            , GRAD_CODE
+            , REG_DATE
+            , REG_ID
+            , CNG_DATE
+            , CNG_ID
+        )
+        VALUES
+        (
+            #{excPerRepSeq}
+            , #{eqpmnNo}
+            , #{eqpmnName}
+            , EQPMN_REG_NO.NEXTVAL
+            , #{stndrd}
+            , #{gradeCode}
+            , #{regDate}
+            , #{regId}
+            , #{cngDate}
+            , #{cngId}
+        )
+    </insert>
+    <!-- 수행실적 신고 상세 중 장비등록 끝 -->
+
+
+
 </mapper>

@@ -36,4 +36,8 @@ public class ExcPerRepMngtDAO extends EgovComAbstractDAO {
     public List<ResPerRepVO> selectPerRepList(ReqExcPerRepDetailVO reqExcPerRepDetailVO) throws Exception{
         return selectList("ExcPerRepMngtDAO.selectPerRepList", reqExcPerRepDetailVO);
     }
+
+    public void insertEqpmnRep(ReqEqpmnRepVO reqEqpmnRepVO) throws Exception{
+        insert("ExcPerRepMngtDAO.insertEqpmnRep", reqEqpmnRepVO);
+    }
 }

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserUtil {
     public <T extends Auditable> void setAuditorFieldsCreate(LoginVO user, T auditable){
-        if (user != null) {
+        if (user.getId() != null) {
             auditable.setRegId(user.getId());
             auditable.setCngId(user.getId());
         } else {
