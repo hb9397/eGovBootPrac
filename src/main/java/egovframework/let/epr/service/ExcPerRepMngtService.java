@@ -21,4 +21,6 @@ public interface ExcPerRepMngtService {
     public List<ResPerRepVO> selectPerRepList(ReqExcPerRepDetailVO reqExcPerRepDetailVO) throws Exception;
 
     public void insertEqpmnRep(ReqEqpmnRepVO reqEqpmnRepVO) throws Exception;
+
+    public void insertPerRep(ReqPerRepVO reqPerRepVO) throws Exception;
 }

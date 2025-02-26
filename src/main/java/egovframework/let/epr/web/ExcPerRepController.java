@@ -141,4 +141,20 @@ public class ExcPerRepController {
 
         return resultVO;
     }
+
+    @PostMapping("/insertPerRep.do")
+    @ResponseBody
+    public ResultVO insertPerRep(@RequestBody ReqPerRepVO createData) throws Exception{
+        ResultVO resultVO = new ResultVO();
+
+        LoginVO user = new LoginVO();
+        userUtil.setAuditorFieldsCreate(user, createData);
+
+        excPerRepMngtService.insertPerRep(createData);
+
+        resultVO.setResultCode(ResponseCode.SUCCESS.getCode());
+        resultVO.setResultMessage(resultVO.getResultMessage());
+
+        return resultVO;
+    }
 }

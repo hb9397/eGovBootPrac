@@ -40,4 +40,8 @@ public class ExcPerRepMngtDAO extends EgovComAbstractDAO {
     public void insertEqpmnRep(ReqEqpmnRepVO reqEqpmnRepVO) throws Exception{
         insert("ExcPerRepMngtDAO.insertEqpmnRep", reqEqpmnRepVO);
     }
+
+    public void insertPerRep(ReqPerRepVO reqPerRepVO) throws Exception{
+        insert("ExcPerRepMngtDAO.insertPerRep", reqPerRepVO);
+    }
 }
