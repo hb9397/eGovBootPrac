@@ -12,11 +12,11 @@ public interface ExcPerRepMngtService {
 
     public void insertExcPerRep(ReqExcPerRepVO reqExcPerRepVO) throws Exception;
 
-    public int selectEqpmnRepListTotCnt() throws Exception;
+    public int selectEqpmnRepListTotCnt(ReqExcPerRepDetailVO reqExcPerRepDetailVO) throws Exception;
 
     public List<ResEqpmnRepVO> selectEqpmnRepList(ReqExcPerRepDetailVO reqExcPerRepDetailVO) throws Exception;
 
-    public int selectPerRepListTotCnt() throws Exception;
+    public int selectPerRepListTotCnt(ReqExcPerRepDetailVO reqExcPerRepDetailVO) throws Exception;
 
     public List<ResPerRepVO> selectPerRepList(ReqExcPerRepDetailVO reqExcPerRepDetailVO) throws Exception;
 

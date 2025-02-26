@@ -76,16 +76,16 @@ public class ExcPerRepController {
 
     @PostMapping("/eqpmnRepList.do")
     @ResponseBody
-    public ResultVO selectEqpmnList(@RequestBody ReqExcPerRepDetailVO searchCondition) throws Exception{
+    public ResultVO selectEqpmnList(@RequestBody ReqExcPerRepDetailVO inquiryCondition) throws Exception{
         ResultVO resultVO = new ResultVO();
 
         LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
         PaginationInfo paginationInfo = new PaginationInfo();
-        int resEqpmnRepListCnt = excPerRepMngtService.selectEqpmnRepListTotCnt();
-        paginationUtil.setPaginationInfo(paginationInfo, resEqpmnRepListCnt, searchCondition);
+        int resEqpmnRepListCnt = excPerRepMngtService.selectEqpmnRepListTotCnt(inquiryCondition);
+        paginationUtil.setPaginationInfo(paginationInfo, resEqpmnRepListCnt, inquiryCondition);
 
-        List<ResEqpmnRepVO> eqpmnRepList = excPerRepMngtService.selectEqpmnRepList(searchCondition);
+        List<ResEqpmnRepVO> eqpmnRepList = excPerRepMngtService.selectEqpmnRepList(inquiryCondition);
 
         Map<String, Object> resultMap = new HashMap<>();
 
@@ -108,7 +108,7 @@ public class ExcPerRepController {
         LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
         PaginationInfo paginationInfo = new PaginationInfo();
-        int resPerRepListCnt = excPerRepMngtService.selectPerRepListTotCnt();
+        int resPerRepListCnt = excPerRepMngtService.selectPerRepListTotCnt(inquiryCondition);
         paginationUtil.setPaginationInfo(paginationInfo, resPerRepListCnt, inquiryCondition);
 
         List<ResPerRepVO> perRepList = excPerRepMngtService.selectPerRepList(inquiryCondition);

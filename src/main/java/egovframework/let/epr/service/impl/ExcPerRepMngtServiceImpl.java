@@ -30,8 +30,8 @@ public class ExcPerRepMngtServiceImpl extends EgovAbstractServiceImpl implements
     }
 
     @Override
-    public int selectEqpmnRepListTotCnt() throws Exception {
-        return excPerRepMngtDAO.selectEqpmnRepListTotCnt();
+    public int selectEqpmnRepListTotCnt(ReqExcPerRepDetailVO reqExcPerRepDetailVO) throws Exception {
+        return excPerRepMngtDAO.selectEqpmnRepListTotCnt(reqExcPerRepDetailVO);
     }
 
     @Override
@@ -40,8 +40,8 @@ public class ExcPerRepMngtServiceImpl extends EgovAbstractServiceImpl implements
     }
 
     @Override
-    public int selectPerRepListTotCnt() throws Exception {
-        return excPerRepMngtDAO.selectPerRepListTotCnt();
+    public int selectPerRepListTotCnt(ReqExcPerRepDetailVO reqExcPerRepDetailVO) throws Exception {
+        return excPerRepMngtDAO.selectPerRepListTotCnt(reqExcPerRepDetailVO);
     }
 
     @Override

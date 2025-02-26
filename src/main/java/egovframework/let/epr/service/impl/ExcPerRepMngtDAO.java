@@ -21,16 +21,16 @@ public class ExcPerRepMngtDAO extends EgovComAbstractDAO {
         insert("ExcPerRepMngtDAO.insertExcPerRep", reqExcPerRepVO);
     }
 
-    public int selectEqpmnRepListTotCnt() throws Exception {
-        return (Integer)selectOne("ExcPerRepMngtDAO.selectEqpmnRepListTotCnt");
+    public int selectEqpmnRepListTotCnt(ReqExcPerRepDetailVO reqExcPerRepDetailVO) throws Exception {
+        return (Integer)selectOne("ExcPerRepMngtDAO.selectEqpmnRepListTotCnt", reqExcPerRepDetailVO);
     }
 
     public List<ResEqpmnRepVO> selectEqpmnRepList(ReqExcPerRepDetailVO reqExcPerRepDetailVO) throws Exception{
         return selectList("ExcPerRepMngtDAO.selectEqpmnRepList", reqExcPerRepDetailVO);
     }
 
-    public int selectPerRepListTotCnt() throws Exception{
-        return (Integer)selectOne("ExcPerRepMngtDAO.selectPerRepListTotCnt");
+    public int selectPerRepListTotCnt(ReqExcPerRepDetailVO reqExcPerRepDetailVO) throws Exception{
+        return (Integer)selectOne("ExcPerRepMngtDAO.selectPerRepListTotCnt", reqExcPerRepDetailVO);
     }
 
     public List<ResPerRepVO> selectPerRepList(ReqExcPerRepDetailVO reqExcPerRepDetailVO) throws Exception{
