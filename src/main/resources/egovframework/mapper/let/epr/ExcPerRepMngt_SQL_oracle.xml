@@ -112,7 +112,7 @@
     </resultMap>
 
     <!-- 수행실적 신고 상세(장비) 카운트 -->
-    <select id="selectEqpmnRepListTotCnt" resultType="int">
+    <select id="selectEqpmnRepListTotCnt" parameterType="egovframework.let.epr.service.vo.ReqExcPerRepDetailVO" resultType="int">
         SELECT
         COUNT(EQPMN_NO) totcnt
         FROM TB_EQPMN_REP
@@ -164,7 +164,7 @@
     </resultMap>
 
     <!-- 수행실적 신고 상세(실적) 조회 카운트 -->
-    <select id="selectPerRepListTotCnt" resultType="int">
+    <select id="selectPerRepListTotCnt" parameterType="egovframework.let.epr.service.vo.ReqExcPerRepDetailVO" resultType="int">
         SELECT
         COUNT(PER_NO) totcnt
         FROM TB_PER_REP
