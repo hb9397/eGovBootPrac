@@ -13,18 +13,8 @@ import java.util.List;
 public class ComCodeService extends EgovAbstractServiceImpl {
     private final ComCodeDAO comCodeDAO;
 
-    @Value("${code-id.eqpmnGrade}")
-    private String eqpmnGrade;
-
-    @Value("${code-id.serviceType}")
-    private String serviceType;
-
-    public List<SelectBoxComCodeVO> selectEqpmnComCodeList() throws Exception {
-        return comCodeDAO.selectComCodeList(eqpmnGrade);
+    public List<SelectBoxComCodeVO> selectComCodeList(String codeId) throws Exception {
+        return comCodeDAO.selectComCodeList(codeId);
     }
 
-    public List<SelectBoxComCodeVO> selectServiceTypeCodeList() throws Exception {
-        String codeId = "PMS003";
-        return comCodeDAO.selectComCodeList(serviceType);
-    }
 }
