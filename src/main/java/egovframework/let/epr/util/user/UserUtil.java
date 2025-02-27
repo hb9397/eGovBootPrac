@@ -16,7 +16,7 @@ public class UserUtil {
     }
 
     public <T extends Auditable> void setAuditorFieldsUpdate(LoginVO user, T auditable){
-        if (user != null) {
+        if (user.getId()  != null) {
             auditable.setCngId(user.getId());
         } else {
             auditable.setCngId("SYSTEM_TEST");
@@ -24,7 +24,7 @@ public class UserUtil {
     }
 
     public <T extends Auditable> void setAuditorFieldsDelete(LoginVO user, T auditable){
-        if (user != null) {
+        if (user.getId()  != null) {
             auditable.setDelId(user.getId());
         } else {
             auditable.setDelId("SYSTEM_TEST");

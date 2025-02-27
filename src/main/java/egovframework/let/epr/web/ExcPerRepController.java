@@ -131,10 +131,26 @@ public class ExcPerRepController {
     public ResultVO insertEqpmnRep(@RequestBody ReqEqpmnRepVO createData) throws Exception{
         ResultVO resultVO = new ResultVO();
 
-        LoginVO user = new LoginVO();
+        LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
         userUtil.setAuditorFieldsCreate(user, createData);
 
         excPerRepMngtService.insertEqpmnRep(createData);
+
+        resultVO.setResultCode(ResponseCode.SUCCESS.getCode());
+        resultVO.setResultMessage(ResponseCode.SUCCESS.getMessage());
+
+        return resultVO;
+    }
+
+    @PostMapping("softDelEqpmnReps.do")
+    @ResponseBody
+    public ResultVO softDeleteEqpmnReps(@RequestBody ReqEqpmnRepVO delDate) throws Exception{
+        ResultVO resultVO = new ResultVO();
+
+        LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+        userUtil.setAuditorFieldsDelete(user, delDate);
+
+        excPerRepMngtService.softDeleteEqpmnReps(delDate);
 
         resultVO.setResultCode(ResponseCode.SUCCESS.getCode());
         resultVO.setResultMessage(ResponseCode.SUCCESS.getMessage());
@@ -147,7 +163,7 @@ public class ExcPerRepController {
     public ResultVO insertPerRep(@RequestBody ReqPerRepVO createData) throws Exception{
         ResultVO resultVO = new ResultVO();
 
-        LoginVO user = new LoginVO();
+        LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
         userUtil.setAuditorFieldsCreate(user, createData);
 
         excPerRepMngtService.insertPerRep(createData);

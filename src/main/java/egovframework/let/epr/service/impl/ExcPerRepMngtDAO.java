@@ -41,7 +41,12 @@ public class ExcPerRepMngtDAO extends EgovComAbstractDAO {
         insert("ExcPerRepMngtDAO.insertEqpmnRep", reqEqpmnRepVO);
     }
 
+    public void softDeleteEqpmnReps(ReqEqpmnRepVO reqEqpmnRepVO) throws Exception{
+        update("ExcPerRepMngtDAO.softDeleteEqpmnReps", reqEqpmnRepVO);
+    }
+
     public void insertPerRep(ReqPerRepVO reqPerRepVO) throws Exception{
         insert("ExcPerRepMngtDAO.insertPerRep", reqPerRepVO);
     }
+
 }

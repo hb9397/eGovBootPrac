@@ -264,5 +264,21 @@
         )
     </insert>
 
+    <!-- 수행실적 신고 상세 장비목록(체크항목) 삭제처리(SoftDelete) 시작 -->
+    <update id="softDeleteEqpmnReps" parameterType="egovframework.let.epr.service.vo.ReqEqpmnRepVO">
+        UPDATE TB_EQPMN_REP
+        SET
+        DEL_DATE = SYSDATE
+        , DEL_ID = #{delId}
+        WHERE REG_NO IN
+        <foreach collection="checkedRegNos" item="regNo" open="(" separator="," close=")">
+            #{regNo}
+        </foreach>
+    </update>
+    <!-- 수행실적 신고 상세 장비목록(체크항목) 삭제처리(SoftDelete) 끝 -->
+
+
+    <!-- 수행실적 신고 상세 실적목록(체크항목) 삭제처리(SoftDelete) 시작 -->
+    <!-- 수행실적 신고 상세 실적목록(체크항목) 삭제처리(SoftDelete) 끝 -->
 
 </mapper>

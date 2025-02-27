@@ -55,6 +55,11 @@ public class ExcPerRepMngtServiceImpl extends EgovAbstractServiceImpl implements
     }
 
     @Override
+    public void softDeleteEqpmnReps(ReqEqpmnRepVO reqEqpmnRepVO) throws Exception {
+        excPerRepMngtDAO.softDeleteEqpmnReps(reqEqpmnRepVO);
+    }
+
+    @Override
     public void insertPerRep(ReqPerRepVO reqPerRepVO) throws Exception {
         excPerRepMngtDAO.insertPerRep(reqPerRepVO);
     }
