@@ -13,7 +13,11 @@ mybatis:
     map-underscore-to-camel-case: false
     default-fetch-size: 3000
     default-statement-timeout: 60
-    jdbc-type-for-null: "NULL"   # null 에러 
+    jdbc-type-for-null: "NULL"
     
 cors:
-  allowed-origin: "http://localhost:3000"  # 허용할 Origin 설정
+  allowed-origin: "http://localhost:3000"
+
+code-id:
+  eqpmnGrade: "PMS002"
+  serviceType: "PMS003"
