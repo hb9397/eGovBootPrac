@@ -25,4 +25,6 @@ public interface ExcPerRepMngtService {
     public void softDeleteEqpmnReps(ReqEqpmnRepVO reqEqpmnRepVO) throws Exception;
 
     public void insertPerRep(ReqPerRepVO reqPerRepVO) throws Exception;
+
+    public void softDeletePerReps(ReqPerRepVO reqPerRepVO) throws Exception;
 }

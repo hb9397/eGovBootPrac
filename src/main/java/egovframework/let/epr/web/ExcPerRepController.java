@@ -144,13 +144,13 @@ public class ExcPerRepController {
 
     @PostMapping("softDelEqpmnReps.do")
     @ResponseBody
-    public ResultVO softDeleteEqpmnReps(@RequestBody ReqEqpmnRepVO delDate) throws Exception{
+    public ResultVO softDeleteEqpmnReps(@RequestBody ReqEqpmnRepVO softDelData) throws Exception{
         ResultVO resultVO = new ResultVO();
 
         LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-        userUtil.setAuditorFieldsDelete(user, delDate);
+        userUtil.setAuditorFieldsDelete(user, softDelData);
 
-        excPerRepMngtService.softDeleteEqpmnReps(delDate);
+        excPerRepMngtService.softDeleteEqpmnReps(softDelData);
 
         resultVO.setResultCode(ResponseCode.SUCCESS.getCode());
         resultVO.setResultMessage(ResponseCode.SUCCESS.getMessage());
@@ -170,6 +170,22 @@ public class ExcPerRepController {
 
         resultVO.setResultCode(ResponseCode.SUCCESS.getCode());
         resultVO.setResultMessage(resultVO.getResultMessage());
+
+        return resultVO;
+    }
+
+    @PostMapping("softDeletePerReps.do")
+    @ResponseBody
+    public ResultVO softDeletePerReps(ReqPerRepVO softDelData) throws Exception{
+        ResultVO resultVO = new ResultVO();
+
+        LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+        userUtil.setAuditorFieldsDelete(user, softDelData);
+
+        excPerRepMngtService.softDeletePerReps(softDelData);
+
+        resultVO.setResultCode(ResponseCode.SUCCESS.getCode());
+        resultVO.setResultMessage(ResponseCode.SUCCESS.getMessage());
 
         return resultVO;
     }
