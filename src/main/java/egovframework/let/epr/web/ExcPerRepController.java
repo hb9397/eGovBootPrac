@@ -176,7 +176,7 @@ public class ExcPerRepController {
 
     @PostMapping("softDeletePerReps.do")
     @ResponseBody
-    public ResultVO softDeletePerReps(ReqPerRepVO softDelData) throws Exception{
+    public ResultVO softDeletePerReps(@RequestBody ReqPerRepVO softDelData) throws Exception{
         ResultVO resultVO = new ResultVO();
 
         LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();

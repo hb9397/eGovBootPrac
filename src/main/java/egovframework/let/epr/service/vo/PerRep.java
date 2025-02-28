@@ -8,7 +8,7 @@ import lombok.Setter;
 public class PerRep {
     private String excPerRepSeq;
 
-    private int perNo;
+    private String perNo;
 
 	private String servcName;
 
