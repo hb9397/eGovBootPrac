@@ -27,4 +27,6 @@ public interface ExcPerRepMngtService {
     public void insertPerRep(ReqPerRepVO reqPerRepVO) throws Exception;
 
     public void softDeletePerReps(ReqPerRepVO reqPerRepVO) throws Exception;
+
+    public void updateStatusWritingToWait(ReqExcPerRepVO reqExcPerRepVO) throws Exception;
 }

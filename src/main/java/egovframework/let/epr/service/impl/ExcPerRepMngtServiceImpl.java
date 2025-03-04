@@ -5,6 +5,7 @@ import egovframework.let.epr.service.vo.*;
 import lombok.RequiredArgsConstructor;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -68,4 +69,11 @@ public class ExcPerRepMngtServiceImpl extends EgovAbstractServiceImpl implements
     public void softDeletePerReps(ReqPerRepVO reqPerRepVO) throws Exception {
         excPerRepMngtDAO.softDeletePerReps(reqPerRepVO);
     }
+
+    @Override
+    @Transactional
+    public void updateStatusWritingToWait(ReqExcPerRepVO reqExcPerRepVO) throws Exception {
+        excPerRepMngtDAO.updateStatusWritingToWait(reqExcPerRepVO);
+    }
+
 }

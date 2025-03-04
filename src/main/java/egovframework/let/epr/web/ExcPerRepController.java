@@ -142,7 +142,7 @@ public class ExcPerRepController {
         return resultVO;
     }
 
-    @PostMapping("softDelEqpmnReps.do")
+    @PostMapping("/softDelEqpmnReps.do")
     @ResponseBody
     public ResultVO softDeleteEqpmnReps(@RequestBody ReqEqpmnRepVO softDelData) throws Exception{
         ResultVO resultVO = new ResultVO();
@@ -174,7 +174,7 @@ public class ExcPerRepController {
         return resultVO;
     }
 
-    @PostMapping("softDeletePerReps.do")
+    @PostMapping("/softDeletePerReps.do")
     @ResponseBody
     public ResultVO softDeletePerReps(@RequestBody ReqPerRepVO softDelData) throws Exception{
         ResultVO resultVO = new ResultVO();
@@ -189,4 +189,21 @@ public class ExcPerRepController {
 
         return resultVO;
     }
+
+    @PostMapping("/updateStatusWritingToWait.do")
+    @ResponseBody
+    public ResultVO updateStatusWritingToWait(@RequestBody ReqExcPerRepVO updateData) throws Exception{
+        ResultVO resultVO = new ResultVO();
+
+        LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+        userUtil.setAuditorFieldsUpdate(user, updateData);
+
+        excPerRepMngtService.updateStatusWritingToWait(updateData);
+
+        resultVO.setResultCode(ResponseCode.SUCCESS.getCode());
+        resultVO.setResultMessage(ResponseCode.SUCCESS.getMessage());
+
+        return resultVO;
+    }
+
 }

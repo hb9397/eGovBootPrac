@@ -290,4 +290,15 @@
     </update>
     <!-- 수행실적 신고 상세 실적목록(체크항목) 삭제처리(SoftDelete) 끝 -->
 
+    <!-- 수행실적 신고 진행상태 변경 ( 작성중 -> 접수대기 ) -->
+    <update id="updateStatusWritingToWait" parameterType="egovframework.let.epr.service.vo.ReqExcPerRepVO">
+        UPDATE TB_EXC_REC_REP
+        SET
+        PROGRS_STAT_CODE = '0002'
+        , CNG_DATE = SYSDATE
+        , CNG_ID = 'SYSTEM_TEST'
+        WHERE 1=1
+        AND EXC_PER_REP_SEQ = #{excPerRepSeq}
+    </update>
+
 </mapper>

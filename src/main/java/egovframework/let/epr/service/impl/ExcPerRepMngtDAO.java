@@ -52,4 +52,9 @@ public class ExcPerRepMngtDAO extends EgovComAbstractDAO {
     public void softDeletePerReps(ReqPerRepVO reqPerRepVO) throws Exception{
         update("ExcPerRepMngtDAO.softDeletePerReps", reqPerRepVO);
     }
+
+
+    public void updateStatusWritingToWait(ReqExcPerRepVO reqExcPerRepVO) throws Exception{
+        update("ExcPerRepMngtDAO.updateStatusWritingToWait", reqExcPerRepVO);
+    }
 }
