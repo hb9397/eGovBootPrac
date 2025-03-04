@@ -299,6 +299,7 @@
         , CNG_ID = 'SYSTEM_TEST'
         WHERE 1=1
         AND EXC_PER_REP_SEQ = #{excPerRepSeq}
+        AND PROGRS_STAT_CODE = '0001'
     </update>
 
 </mapper>
