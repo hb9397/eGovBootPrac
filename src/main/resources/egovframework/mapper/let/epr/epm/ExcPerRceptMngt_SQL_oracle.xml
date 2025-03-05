@@ -9,7 +9,10 @@
         , CNG_DATE = SYSDATE
         , CNG_ID = #{cngId}
         WHERE 1=1
-        AND EXC_PER_REP_SEQ = #{excPerRepSeq}
+        AND EXC_PER_REP_SEQ IN
+        <foreach collection="checkedExcPerReqSeqs" item="excPerRepSeq" open="(" separator="," close=")">
+            #{excPerRepSeq}
+        </foreach>
         AND PROGRS_STAT_CODE = '0002'
     </update>
 </mapper>
