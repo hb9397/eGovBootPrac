@@ -296,7 +296,7 @@
         SET
         PROGRS_STAT_CODE = '0002'
         , CNG_DATE = SYSDATE
-        , CNG_ID = 'SYSTEM_TEST'
+        , CNG_ID = #{cngId}
         WHERE 1=1
         AND EXC_PER_REP_SEQ = #{excPerRepSeq}
         AND PROGRS_STAT_CODE = '0001'
