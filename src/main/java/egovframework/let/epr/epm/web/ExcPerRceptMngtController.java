@@ -25,19 +25,31 @@ public class ExcPerRceptMngtController {
     @ResponseBody
     @PostMapping("/updateStatusWaitToApproval.do")
     public ResultVO updateStatusWaitToApproval(@RequestBody ReqExcPerRepVO updateData) throws Exception{
-
         ResultVO resultVO = new ResultVO();
-
-        LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-        userUtil.setAuditorFieldsUpdate(user, updateData);
-
         Map<String, Object> resultMap = new HashMap<>();
 
-        resultMap.put("consequence", excPerRceptMngtService.updateStatusWaitToApproval(updateData));
+        try {
+            LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+            userUtil.setAuditorFieldsUpdate(user, updateData);
 
-        resultVO.setResultCode(ResponseCode.SUCCESS.getCode());
-        resultVO.setResult(resultMap);
-        resultVO.setResultMessage(ResponseCode.SUCCESS.getMessage());
+            resultMap.put("consequence", excPerRceptMngtService.updateStatusWaitToApproval(updateData));
+
+            resultVO.setResultCode(ResponseCode.SUCCESS.getCode());
+            resultVO.setResult(resultMap);
+            resultVO.setResultMessage(ResponseCode.SUCCESS.getMessage());
+        } catch (RuntimeException e){
+            resultMap.put("consequence", -1);
+
+            resultVO.setResultCode(ResponseCode.BAD_REQUEST.getCode());
+            resultVO.setResult(resultMap);
+            resultVO.setResultMessage(e.getMessage());
+        } catch (Exception e){
+            resultMap.put("consequence", -2);
+
+            resultVO.setResultCode(ResponseCode.INTERNAL_SERVER_ERROR.getCode());
+            resultVO.setResult(resultMap);
+            resultVO.setResultMessage(e.getMessage());
+        }
 
         return resultVO;
     }
@@ -46,17 +58,36 @@ public class ExcPerRceptMngtController {
     @PostMapping("/updateStatusWaitToReject.do")
     public ResultVO updateStatusWaitToReject(@RequestBody ReqExcPerRepVO updateData) throws Exception{
         ResultVO resultVO = new ResultVO();
-
-        LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-        userUtil.setAuditorFieldsUpdate(user, updateData);
-
         Map<String, Object> resultMap = new HashMap<>();
 
-        resultMap.put("consequence", excPerRceptMngtService.updateStatusWaitToReject(updateData));
+        try {
+            LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+            userUtil.setAuditorFieldsUpdate(user, updateData);
 
-        resultVO.setResultCode(ResponseCode.SUCCESS.getCode());
-        resultVO.setResult(resultMap);
-        resultVO.setResultMessage(ResponseCode.SUCCESS.getMessage());
+            int consequence = excPerRceptMngtService.updateStatusWaitToReject(updateData);
+
+            resultMap.put("consequence", consequence);
+
+            resultVO.setResultCode(ResponseCode.SUCCESS.getCode());
+            resultVO.setResult(resultMap);
+            resultVO.setResultMessage(ResponseCode.SUCCESS.getMessage());
+        } catch (RuntimeException e) {
+            // Service 예외 처리
+            resultMap.put("error", e.getMessage());
+            resultMap.put("consequence", -1);
+
+            resultVO.setResultCode(ResponseCode.BAD_REQUEST.getCode());
+            resultVO.setResult(resultMap);
+            resultVO.setResultMessage(e.getMessage());
+        } catch (Exception e) {
+            // 기타 예외 처리
+            resultMap.put("error", "Unexpected error occurred");
+            resultMap.put("consequence", -2);
+
+            resultVO.setResultCode(ResponseCode.INTERNAL_SERVER_ERROR.getCode());
+            resultVO.setResult(resultMap);
+            resultVO.setResultMessage(e.getMessage());
+        }
 
         return resultVO;
     }

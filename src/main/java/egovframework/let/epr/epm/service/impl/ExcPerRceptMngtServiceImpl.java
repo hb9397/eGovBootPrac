@@ -16,12 +16,25 @@ public class ExcPerRceptMngtServiceImpl extends EgovAbstractServiceImpl implemen
     @Override
     @Transactional
     public int updateStatusWaitToApproval(ReqExcPerRepVO reqExcPerRepVO) throws Exception {
-        return excPerRceptMngtDAO.updateStatusWaitToApproval(reqExcPerRepVO);
+        int consequence = excPerRceptMngtDAO.updateStatusWaitToApproval(reqExcPerRepVO);
+
+        if(reqExcPerRepVO.getCheckedExcPerReqSeqs().size() == consequence){
+            return consequence;
+        } else {
+            throw new RuntimeException("Update failed : Only items with status 0002 (Waiting) should be selected.");
+        }
     }
 
     @Override
     @Transactional
     public int updateStatusWaitToReject(ReqExcPerRepVO reqExcPerRepVO) throws Exception {
-        return excPerRceptMngtDAO.updateStatusWaitToReject(reqExcPerRepVO);
+
+        int consequence = excPerRceptMngtDAO.updateStatusWaitToReject(reqExcPerRepVO);
+
+        if (reqExcPerRepVO.getCheckedExcPerReqSeqs().size() == consequence){
+            return consequence;
+        } else {
+            throw new RuntimeException("Update failed : Only items with status 0002 (Waiting) should be selected.");
+        }
     }
 }
