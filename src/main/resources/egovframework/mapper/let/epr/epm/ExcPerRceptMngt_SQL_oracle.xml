@@ -15,4 +15,18 @@
         </foreach>
         AND PROGRS_STAT_CODE = '0002'
     </update>
+
+    <update id="updateStatusWaitToReject" parameterType="egovframework.let.epr.service.vo.ReqExcPerRepVO">
+        UPDATE TB_EXC_REC_REP
+        SET
+        PROGRS_STAT_CODE = '0004'
+        , CNG_DATE = SYSDATE
+        , CNG_ID = #{cngId}
+        WHERE 1=1
+        AND EXC_PER_REP_SEQ IN
+        <foreach collection="checkedExcPerReqSeqs" item="excPerRepSeq" open="(" separator="," close=")">
+            #{excPerRepSeq}
+        </foreach>
+        AND PROGRS_STAT_CODE = '0002'
+    </update>
 </mapper>

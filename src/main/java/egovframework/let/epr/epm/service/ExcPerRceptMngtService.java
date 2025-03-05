@@ -4,4 +4,6 @@ import egovframework.let.epr.service.vo.ReqExcPerRepVO;
 
 public interface ExcPerRceptMngtService {
     public int updateStatusWaitToApproval(ReqExcPerRepVO reqExcPerRepVO) throws Exception;
+
+    public int updateStatusWaitToReject (ReqExcPerRepVO reqExcPerRepVO) throws  Exception;
 }

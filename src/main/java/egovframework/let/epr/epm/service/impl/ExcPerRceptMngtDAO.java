@@ -9,4 +9,8 @@ public class ExcPerRceptMngtDAO extends EgovComAbstractDAO {
     public int updateStatusWaitToApproval(ReqExcPerRepVO reqExcPerRepVO) throws Exception{
         return update("ExcPerRceptMngtDAO.updateStatusWaitToApproval", reqExcPerRepVO);
     }
+
+    public int updateStatusWaitToReject(ReqExcPerRepVO reqExcPerRepVO) throws Exception{
+        return update("ExcPerRceptMngtDAO.updateStatusWaitToReject", reqExcPerRepVO);
+    }
 }

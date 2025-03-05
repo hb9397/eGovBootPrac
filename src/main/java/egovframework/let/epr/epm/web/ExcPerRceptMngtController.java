@@ -41,4 +41,23 @@ public class ExcPerRceptMngtController {
 
         return resultVO;
     }
+
+    @ResponseBody
+    @PostMapping("/updateStatusWaitToReject.do")
+    public ResultVO updateStatusWaitToReject(@RequestBody ReqExcPerRepVO updateData) throws Exception{
+        ResultVO resultVO = new ResultVO();
+
+        LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+        userUtil.setAuditorFieldsUpdate(user, updateData);
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        resultMap.put("consequence", excPerRceptMngtService.updateStatusWaitToReject(updateData));
+
+        resultVO.setResultCode(ResponseCode.SUCCESS.getCode());
+        resultVO.setResult(resultMap);
+        resultVO.setResultMessage(ResponseCode.SUCCESS.getMessage());
+
+        return resultVO;
+    }
 }

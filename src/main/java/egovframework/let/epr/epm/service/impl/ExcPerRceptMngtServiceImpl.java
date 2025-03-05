@@ -18,4 +18,10 @@ public class ExcPerRceptMngtServiceImpl extends EgovAbstractServiceImpl implemen
     public int updateStatusWaitToApproval(ReqExcPerRepVO reqExcPerRepVO) throws Exception {
         return excPerRceptMngtDAO.updateStatusWaitToApproval(reqExcPerRepVO);
     }
+
+    @Override
+    @Transactional
+    public int updateStatusWaitToReject(ReqExcPerRepVO reqExcPerRepVO) throws Exception {
+        return excPerRceptMngtDAO.updateStatusWaitToReject(reqExcPerRepVO);
+    }
 }
