@@ -21,3 +21,20 @@ cors:
 code-id:
   eqpmnGrade: "PMS002"
   serviceType: "PMS003"
+
+spring:
+  batch:
+    job:
+      enabled: false
+      
+  datasource:
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    jdbc-url: jdbc:log4jdbc:oracle:thin:@127.0.0.1:1522:xe
+    username: dev_1
+    password: 1234
+
+  datasource-meta:
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    jdbc-url: jdbc:log4jdbc:oracle:thin:@127.0.0.1:1522:xe
+    username: batch_dev_1
+    password: 1234
