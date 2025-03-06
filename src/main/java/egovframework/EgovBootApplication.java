@@ -1,5 +1,6 @@
 package egovframework;
 
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,6 +9,7 @@ import org.springframework.context.annotation.Import;
 
 import egovframework.com.config.EgovWebApplicationInitializer;
 
+@EnableBatchProcessing
 @ServletComponentScan
 @SpringBootApplication
 @Import({EgovWebApplicationInitializer.class})

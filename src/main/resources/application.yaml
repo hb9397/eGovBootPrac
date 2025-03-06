@@ -1,3 +1,9 @@
 spring:
   profiles:
     active: local
+
+logging:
+  level:
+    org.springframework.batch: DEBUG
+    org.springframework.jdbc: DEBUG
+    org.springframework.jdbc.datasource.init: DEBUG

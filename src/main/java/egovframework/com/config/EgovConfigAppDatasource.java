@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.transaction.PlatformTransactionManager;
 
 /**
  * @ClassName : EgovConfigAppDatasource.java
@@ -110,5 +112,11 @@ public class EgovConfigAppDatasource {
 		} else {
 			return basicDataSource();
 		}
+	}
+
+	//@Primary
+	@Bean
+	public PlatformTransactionManager egovTransactionManager(/*@Qualifier("egov.dataSource")*/ DataSource dataSource) {
+		return new DataSourceTransactionManager(dataSource);
 	}
 }
