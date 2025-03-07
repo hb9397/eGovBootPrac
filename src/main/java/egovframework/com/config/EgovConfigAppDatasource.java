@@ -1,5 +1,10 @@
 package egovframework.com.config;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
@@ -7,11 +12,15 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @ClassName : EgovConfigAppDatasource.java
@@ -30,6 +39,7 @@ import org.springframework.transaction.PlatformTransactionManager;
  * </pre>
  *
  */
+@Slf4j
 @Configuration
 public class EgovConfigAppDatasource {
 
@@ -76,6 +86,8 @@ public class EgovConfigAppDatasource {
 		url = env.getProperty("Globals." + dbType + ".Url");
 		userName = env.getProperty("Globals." + dbType + ".UserName");
 		password = env.getProperty("Globals." + dbType + ".Password");
+
+		verifyMetaDBConnection();
 	}
 
 	/**
@@ -106,6 +118,7 @@ public class EgovConfigAppDatasource {
 	 * @return [DataSource 설정]
 	 */
 	@Bean(name = {"dataSource", "egov.dataSource", "egovDataSource"})
+	@Primary
 	public DataSource dataSource() {
 		if ("hsql".equals(dbType)) {
 			return dataSourceHSQL();
@@ -114,9 +127,38 @@ public class EgovConfigAppDatasource {
 		}
 	}
 
-	//@Primary
-	@Bean
-	public PlatformTransactionManager egovTransactionManager(/*@Qualifier("egov.dataSource")*/ DataSource dataSource) {
-		return new DataSourceTransactionManager(dataSource);
+	@Async
+	public void verifyMetaDBConnection() {
+		try (Connection connection = dataSource().getConnection()) {
+			if (connection != null && !connection.isClosed()) {
+				log.info("RealDB 연결 성공: {}", connection);
+				fetchMetaDBTableInfo(connection);
+			}
+		} catch (SQLException e) {
+			log.error("RealDB 연결 실패", e);
+		}
+	}
+
+	private void fetchMetaDBTableInfo(Connection connection) {
+		String query = "SELECT TABLE_NAME FROM USER_TABLES";
+
+		try (Statement stmt = connection.createStatement();
+			 ResultSet rs = stmt.executeQuery(query)) {
+
+			log.info("📌 RealDB의 모든 테이블 목록:");
+
+			boolean hasTables = false;
+			while (rs.next()) {
+				hasTables = true;
+				log.info("📌 - {}", rs.getString("TABLE_NAME"));
+			}
+
+			if (!hasTables) {
+				log.info("📌 RealDB에 테이블이 없습니다.");
+			}
+
+		} catch (SQLException e) {
+			log.error("❌ RealDB의 테이블 정보를 가져오는 중 오류 발생", e);
+		}
 	}
 }

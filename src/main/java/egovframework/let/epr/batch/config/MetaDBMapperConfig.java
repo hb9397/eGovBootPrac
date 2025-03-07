@@ -1,4 +1,4 @@
-package egovframework.com.config;
+package egovframework.let.epr.batch.config;
 
 import java.io.IOException;
 
@@ -8,7 +8,6 @@ import javax.sql.DataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,34 +21,16 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.support.lob.DefaultLobHandler;
 import org.springframework.transaction.PlatformTransactionManager;
 
-/**
- * @ClassName : EgovConfigAppMapper.java
- * @Description : Mapper 설정
- *
- * @author : 윤주호
- * @since  : 2021. 7. 20
- * @version : 1.0
- *
- * <pre>
- * << 개정이력(Modification Information) >>
- *
- *   수정일              수정자               수정내용
- *  -------------  ------------   ---------------------
- *   2021. 7. 20    윤주호               최초 생성
- * </pre>
- *
- */
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Configuration
 @PropertySources({
-//	@PropertySource("classpath:/egovframework/egovProps/globals.properties")
 	@PropertySource("classpath:/application.yaml")
 })
-public class EgovConfigAppMapper {
-	@Autowired
-	DataSource dataSource;
+public class MetaDBMapperConfig {
 
-	@Autowired
-	Environment env;
+	private final Environment env;
 
 	private String dbType;
 
@@ -60,13 +41,13 @@ public class EgovConfigAppMapper {
 
 	@Bean
 	@Lazy
-	public DefaultLobHandler lobHandler() {
+	public DefaultLobHandler metaLobHandler() {
 		return new DefaultLobHandler();
 	}
 
-	@Bean(name = {"sqlSession", "egov.sqlSession"})
+	@Bean(name = {"metaSqlSession", "egov.metaSqlSession"})
 	@Primary
-	public SqlSessionFactoryBean sqlSession() {
+	public SqlSessionFactoryBean metaSqlSession(@Qualifier("metaDataSource") DataSource dataSource) {
 		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 		sqlSessionFactoryBean.setDataSource(dataSource);
 
@@ -89,15 +70,14 @@ public class EgovConfigAppMapper {
 
 	@Bean
 	@Primary
-	public SqlSessionTemplate egovSqlSessionTemplate(@Qualifier("sqlSession") SqlSessionFactory sqlSession) {
+	public SqlSessionTemplate egovMetaSqlSessionTemplate(@Qualifier("metaSqlSession") SqlSessionFactory sqlSession) {
 		SqlSessionTemplate sqlSessionTemplate = new SqlSessionTemplate(sqlSession);
 		return sqlSessionTemplate;
 	}
 
 	@Bean
 	@Primary
-	public PlatformTransactionManager egovTransactionManager(@Qualifier("dataSource") DataSource dataSource) {
+	public PlatformTransactionManager egovMetaTransactionManager(@Qualifier("metaDataSource") DataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
 	}
-
 }
