@@ -87,7 +87,7 @@ public class EgovConfigAppDatasource {
 		userName = env.getProperty("Globals." + dbType + ".UserName");
 		password = env.getProperty("Globals." + dbType + ".Password");
 
-		verifyMetaDBConnection();
+		verifyRealDBConnection();
 	}
 
 	/**
@@ -128,18 +128,18 @@ public class EgovConfigAppDatasource {
 	}
 
 	@Async
-	public void verifyMetaDBConnection() {
+	public void verifyRealDBConnection() {
 		try (Connection connection = dataSource().getConnection()) {
 			if (connection != null && !connection.isClosed()) {
 				log.info("RealDB 연결 성공: {}", connection);
-				fetchMetaDBTableInfo(connection);
+				fetchRealDBTableInfo(connection);
 			}
 		} catch (SQLException e) {
 			log.error("RealDB 연결 실패", e);
 		}
 	}
 
-	private void fetchMetaDBTableInfo(Connection connection) {
+	private void fetchRealDBTableInfo(Connection connection) {
 		String query = "SELECT TABLE_NAME FROM USER_TABLES";
 
 		try (Statement stmt = connection.createStatement();
