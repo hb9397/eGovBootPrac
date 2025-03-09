@@ -60,7 +60,7 @@ public class MetaDBMapperConfig {
 		try {
 			sqlSessionFactoryBean.setMapperLocations(
 				pathMatchingResourcePatternResolver
-					.getResources("classpath:/egovframework/mapper/let/**/*_" + dbType + ".xml"));
+					.getResources("classpath:/egovframework/mapper/batch/**/*_" + dbType + ".xml"));
 		} catch (IOException e) {
 			// TODO Exception 처리 필요
 		}
