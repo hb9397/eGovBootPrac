@@ -290,7 +290,7 @@
     </update>
     <!-- 수행실적 신고 상세 실적목록(체크항목) 삭제처리(SoftDelete) 끝 -->
 
-    <!-- 수행실적 신고 진행상태 변경 ( 작성중 -> 접수대기 ) -->
+    <!-- 수행실적 신고 진행상태 변경 ( 작성중 -> 접수대기 ) 시작 -->
     <update id="updateStatusWritingToWait" parameterType="egovframework.let.epr.service.vo.ReqExcPerRepVO">
         UPDATE TB_EXC_REC_REP
         SET
@@ -301,5 +301,58 @@
         AND EXC_PER_REP_SEQ = #{excPerRepSeq}
         AND PROGRS_STAT_CODE = '0001'
     </update>
+    <!-- 수행실적 신고 진행상태 변경 ( 작성중 -> 접수대기 ) 끝 -->
 
+    <!-- Batch Delete ( SoftDelete 실제 삭제 ) 시작 -->
+    <!-- SoftDelete 데이터 조회 조건 시작 -->
+    <sql id="batchDeleteCondition">
+        AND DEL_DATE IS NOT NULL
+        AND DEL_ID IS NOT NULL
+    </sql>
+    <!-- SoftDelete 데이터 조회 조건 끝 -->
+
+    <!-- TB_EXC_PER_REP 에서 삭제할 데이터 검색 시작 -->
+    <select id="selectExcPerRepDelIsNotNullList" resultType="java.lang.String">
+        SELECT EXC_PER_REP_SEQ
+        FROM TB_EXC_REC_REP
+        WHERE 1=1
+        <include refid="batchDeleteCondition"/>
+    </select>
+    <!-- TB_EXC_PER_REP 에서 삭제할 데이터 검색 끝 -->
+
+    <!-- TB_EQPMN_REP 에서 삭제할 데이터 검색 시작 -->
+    <select id="selectEQPMNREPDelIsNotNullList" resultType="java.lang.String">
+        SELECT EXC_PER_REP_SEQ
+        FROM TB_EQPMN_REP
+        WHERE 1=1
+        <include refid="batchDeleteCondition"/>
+    </select>
+    <!-- TB_EQPMN_REP 에서 삭제할 데이터 검색 끝 -->
+
+    <!-- TB_PER_REP 에서 삭제할 데이터 검색 시작 -->
+    <select id="selectPERREPDelIsNotNullList" resultType="java.util.List">
+        SELECT EXC_PER_REP_SEQ
+        FROM TB_PRE_REP
+        WHERE 1=1
+        <include refid="batchDeleteCondition"/>
+    </select>
+    <!-- TB_PER_REP 에서 삭제할 데이터 검색 끝 -->
+
+    <!-- TB_EXC_PER_REP 데이터 삭제 시작 -->
+    <delete id="deleteExcPerReps" parameterType="java.util.List">
+        DELETE
+        FROM TB_EXC_REC_REP
+        WHERE EXC_PER_REP_SEQ IN
+        <foreach collection="delSeqs" item="delSeq" open="(" separator="," close=")">
+            #{delSeq}
+        </foreach>
+    </delete>
+    <!-- TB_EXC_PER_REP 데이터 삭제 끝 -->
+
+    <!-- TB_EQPMN_REP 데이터 삭제 시작 -->
+    <!-- TB_EQPMN_REP 데이터 삭제 끝 -->
+
+    <!-- TB_PER_REP 데이터 삭제 시작 -->
+    <!-- TB_PER_REP 데이터 삭제 끝 -->
+    <!-- Batch Delete( SoftDelete 실제 삭제 ) 끝 -->
 </mapper>

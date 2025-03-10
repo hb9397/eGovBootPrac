@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.env.Environment;
@@ -46,7 +45,6 @@ public class MetaDBMapperConfig {
 	}
 
 	@Bean(name = {"metaSqlSession", "egov.metaSqlSession"})
-	@Primary
 	public SqlSessionFactoryBean metaSqlSession(@Qualifier("metaDataSource") DataSource dataSource) {
 		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 		sqlSessionFactoryBean.setDataSource(dataSource);
@@ -69,14 +67,12 @@ public class MetaDBMapperConfig {
 	}
 
 	@Bean
-	@Primary
 	public SqlSessionTemplate egovMetaSqlSessionTemplate(@Qualifier("metaSqlSession") SqlSessionFactory sqlSession) {
 		SqlSessionTemplate sqlSessionTemplate = new SqlSessionTemplate(sqlSession);
 		return sqlSessionTemplate;
 	}
 
 	@Bean
-	@Primary
 	public PlatformTransactionManager egovMetaTransactionManager(@Qualifier("metaDataSource") DataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
 	}

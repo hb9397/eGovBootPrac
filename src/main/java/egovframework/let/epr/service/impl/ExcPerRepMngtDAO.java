@@ -2,6 +2,8 @@ package egovframework.let.epr.service.impl;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.let.epr.service.vo.*;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -53,8 +55,23 @@ public class ExcPerRepMngtDAO extends EgovComAbstractDAO {
         update("ExcPerRepMngtDAO.softDeletePerReps", reqPerRepVO);
     }
 
-
     public void updateStatusWritingToWait(ReqExcPerRepVO reqExcPerRepVO) throws Exception{
         update("ExcPerRepMngtDAO.updateStatusWritingToWait", reqExcPerRepVO);
+    }
+
+    public List<String> selectExcPerRepDelIsNotNullList() throws Exception{
+        return selectList("ExcPerRepMngtDAO.selectExcPerRepDelIsNotNullList");
+    }
+
+    public List<String> selectEQPMNREPDelIsNotNullList() throws Exception{
+        return selectList("ExcPerRepMngtDAO.selectEQPMNREPDelIsNotNullList");
+    }
+
+    public List<String> selectPERREPDelIsNotNullList() throws Exception{
+        return selectList("ExcPerRepMngtDAO.selectPERREPDelIsNotNullList");
+    }
+
+    public int deleteExcPerReps(@Param("delSeqs") List<String> delSeqs) throws Exception{
+        return delete("ExcPerRepMngtDAO.deleteExcPerReps", delSeqs);
     }
 }

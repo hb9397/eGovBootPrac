@@ -75,5 +75,4 @@ public class ExcPerRepMngtServiceImpl extends EgovAbstractServiceImpl implements
     public void updateStatusWritingToWait(ReqExcPerRepVO reqExcPerRepVO) throws Exception {
         excPerRepMngtDAO.updateStatusWritingToWait(reqExcPerRepVO);
     }
-
 }
