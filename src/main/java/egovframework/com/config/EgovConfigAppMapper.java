@@ -66,7 +66,7 @@ public class EgovConfigAppMapper {
 
 	@Bean(name = {"sqlSession", "egov.sqlSession"})
 	@Primary
-	public SqlSessionFactoryBean sqlSession() {
+	public SqlSessionFactory sqlSession() throws Exception{
 		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 		sqlSessionFactoryBean.setDataSource(dataSource);
 
@@ -84,7 +84,7 @@ public class EgovConfigAppMapper {
 			// TODO Exception 처리 필요
 		}
 
-		return sqlSessionFactoryBean;
+		return sqlSessionFactoryBean.getObject();
 	}
 
 	@Bean

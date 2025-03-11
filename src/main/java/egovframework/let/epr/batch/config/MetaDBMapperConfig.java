@@ -45,7 +45,7 @@ public class MetaDBMapperConfig {
 	}
 
 	@Bean(name = {"metaSqlSession", "egov.metaSqlSession"})
-	public SqlSessionFactoryBean metaSqlSession(@Qualifier("metaDataSource") DataSource dataSource) {
+	public SqlSessionFactory metaSqlSession(@Qualifier("metaDataSource") DataSource dataSource) throws Exception {
 		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 		sqlSessionFactoryBean.setDataSource(dataSource);
 
@@ -63,7 +63,7 @@ public class MetaDBMapperConfig {
 			// TODO Exception 처리 필요
 		}
 
-		return sqlSessionFactoryBean;
+		return sqlSessionFactoryBean.getObject();
 	}
 
 	@Bean

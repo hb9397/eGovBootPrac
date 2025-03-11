@@ -3,12 +3,15 @@ package egovframework.let.epr.batch;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.batch.MyBatisCursorItemReader;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,29 +38,35 @@ public class SoftDeleteBatch {
 	private final ExcPerRepMngtDAO excPerRepMngtDAO;
 
 	@Bean
-	public Job deleteExcPerRepsJob() {
+	public Job deleteExcPerRepsJob(@Qualifier("sqlSession") SqlSessionFactory sqlSession) {
 		return jobBuilderFactory.get("deleteExcPerRepsJob")
-			.start(deleteExcPerRepsStep())
+			.start(deleteExcPerRepsStep(sqlSession))
 			.build();
 	}
 
 	@Bean
-	public Step deleteExcPerRepsStep() {
+	public Step deleteExcPerRepsStep(@Qualifier("sqlSession") SqlSessionFactory sqlSession) {
 		return stepBuilderFactory.get("deleteExcPerRepsStep")
 			 /**
 			  	첫 번째 String → reader()에서 읽어오는 데이터 타입
-			   두 번째 ARecord → processor()를 거친 후 writer()로 넘어가는 데이터 타입
+			    두 번째 processor()를 거친 후 writer()로 넘어가는 데이터 타입
 			 **/
 			.<String, String>chunk(10)
-			.reader(reader())
+			.reader(reader(sqlSession))
 			.writer(writer())
 			.build();
 	}
 
 	/*** Reader : 특정 테이블에서 작업할 데이터를 가져온다. ***/
 	@Bean
-	public MyBatisCursorItemReader<String> reader() {
+	public MyBatisCursorItemReader<String> reader(@Qualifier("sqlSession") SqlSessionFactory sqlSession) {
+		/*
+		return new MyBatisCursorItemReaderBuilder<String>()
+			.queryId("egovframework.let.epr.service.impl.ExcPerRepMngtDAO.selectExcPerRepDelIsNotNullList")
+			.build();
+		*/
 		MyBatisCursorItemReader<String> reader = new MyBatisCursorItemReader<>();
+		reader.setSqlSessionFactory(sqlSession);
 		reader.setQueryId("egovframework.let.epr.service.impl.ExcPerRepMngtDAO.selectExcPerRepDelIsNotNullList");
 		return reader;
 	}
