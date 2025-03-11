@@ -1,17 +1,19 @@
 package egovframework.let.epr.batch;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.batch.MyBatisCursorItemReader;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.JobRegistry;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.support.JobRegistryBeanPostProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -37,7 +39,7 @@ public class SoftDeleteBatch {
 
 	private final ExcPerRepMngtDAO excPerRepMngtDAO;
 
-	@Bean
+	@Bean(name = "deleteExcPerRepsJob")
 	public Job deleteExcPerRepsJob(@Qualifier("sqlSession") SqlSessionFactory sqlSession) {
 		return jobBuilderFactory.get("deleteExcPerRepsJob")
 			.start(deleteExcPerRepsStep(sqlSession))
@@ -67,7 +69,7 @@ public class SoftDeleteBatch {
 		*/
 		MyBatisCursorItemReader<String> reader = new MyBatisCursorItemReader<>();
 		reader.setSqlSessionFactory(sqlSession);
-		reader.setQueryId("egovframework.let.epr.service.impl.ExcPerRepMngtDAO.selectExcPerRepDelIsNotNullList");
+		reader.setQueryId("ExcPerRepMngtDAO.selectExcPerRepDelIsNotNullList");
 		return reader;
 	}
 
@@ -91,5 +93,15 @@ public class SoftDeleteBatch {
 				log.info("Deleted TB_EXC_PER_REC.EXC_PER_REP_SEQ rows : " + deletedRows);
 			}
 		};
+	}
+
+	// JobRegistry 등록
+	@Bean
+	public JobRegistryBeanPostProcessor jobRegistryBeanPostProcessor(
+		JobRegistry jobRegistry, ApplicationContext applicationContext) {
+		JobRegistryBeanPostProcessor processor = new JobRegistryBeanPostProcessor();
+		processor.setJobRegistry(jobRegistry);
+		processor.setBeanFactory(applicationContext.getAutowireCapableBeanFactory());
+		return processor;
 	}
 }

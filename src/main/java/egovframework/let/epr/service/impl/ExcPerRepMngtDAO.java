@@ -6,7 +6,9 @@ import egovframework.let.epr.service.vo.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository("ExcPerRepMngtDAO")
 public class ExcPerRepMngtDAO extends EgovComAbstractDAO {
@@ -71,7 +73,9 @@ public class ExcPerRepMngtDAO extends EgovComAbstractDAO {
         return selectList("ExcPerRepMngtDAO.selectPERREPDelIsNotNullList");
     }
 
-    public int deleteExcPerReps(@Param("delSeqs") List<String> delSeqs) throws Exception{
-        return delete("ExcPerRepMngtDAO.deleteExcPerReps", delSeqs);
+    public int deleteExcPerReps(List<String> delSeqs) throws Exception{
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("delSeqs", delSeqs);
+        return delete("ExcPerRepMngtDAO.deleteExcPerReps", paramMap);
     }
 }
