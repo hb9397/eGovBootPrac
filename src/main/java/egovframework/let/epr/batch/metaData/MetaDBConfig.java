@@ -5,14 +5,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
@@ -25,21 +22,16 @@ public class MetaDBConfig {
 
     @Bean(name = "metaDataSource")
     @ConfigurationProperties(prefix = "spring.datasource-meta")
-    public DataSource metaDBSource() {
+    public DataSource metaDataSource() {
         // spring.datasource-meta 하위 값을 기반으로 아래의 DataSourceBuilder 를 Create 한다.
 
         return DataSourceBuilder.create().build();
     }
 
-    @Bean
-    public PlatformTransactionManager metaTransactionManager(@Qualifier("metaDataSource") DataSource dataSource) {
-        return new DataSourceTransactionManager(dataSource);
-    }
-
     @Async
     @PostConstruct
     public void verifyMetaDBConnection() {
-        try (Connection connection = metaDBSource().getConnection()) {
+        try (Connection connection = metaDataSource().getConnection()) {
             if (connection != null && !connection.isClosed()) {
                 log.info("MetaDB 연결 성공: {}", connection);
                 fetchMetaDBTableInfo(connection);

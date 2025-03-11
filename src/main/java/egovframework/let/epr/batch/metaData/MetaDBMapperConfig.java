@@ -66,13 +66,13 @@ public class MetaDBMapperConfig {
 		return sqlSessionFactoryBean.getObject();
 	}
 
-	@Bean
+	@Bean(name = "metaSqlSessionTemplate")
 	public SqlSessionTemplate egovMetaSqlSessionTemplate(@Qualifier("metaSqlSession") SqlSessionFactory sqlSession) {
 		SqlSessionTemplate sqlSessionTemplate = new SqlSessionTemplate(sqlSession);
 		return sqlSessionTemplate;
 	}
 
-	@Bean
+	@Bean(name = "metaTransactionManager")
 	public PlatformTransactionManager egovMetaTransactionManager(@Qualifier("metaDataSource") DataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
 	}
