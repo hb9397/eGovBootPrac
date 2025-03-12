@@ -14,7 +14,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import egovframework.let.epr.batch.service.impl.EprBatchDAO;
 import egovframework.let.epr.service.impl.ExcPerRepMngtDAO;
 import egovframework.let.epr.service.vo.ResExcPerRepVO;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +53,6 @@ public class SoftDeleteBatch {
 	private final StepBuilderFactory stepBuilderFactory;
 
 	private final ExcPerRepMngtDAO excPerRepMngtDAO;
-	private final EprBatchDAO eprBatchDAO;
 
 	// JobRegistry 등록
 	@Bean
