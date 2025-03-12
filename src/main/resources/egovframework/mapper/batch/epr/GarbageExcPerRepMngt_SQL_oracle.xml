@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+     전자정부 프레임워크에서 DAO 를 구현할 때 사용하는 상위 클래스
+     EgovComAbstractDAO, EgovAbstractMapper 등에서 기본 DB로 설정된
+     SqlSessionFactory 를 @Resource 로 강제하고 있기 때문에 다중 DB로 설정을 변경하려면 해당 상위 개체 부터 커스터마이징해야한다.
+
+     그래서 지금은 단일 DB로 진행, 이거는 Spring Batch 다중 DB 를 이용할 때,
+     참고하는 코드 정도로.,.,..,
+     아니면 시간 나면 위의 상위객체까지 커스텀 해서 사용해보기
+ -->
+
+<mapper namespace="EprBatchDAO">
+    <!-- 삭제된 수행실적신고 목록 삭제 테이블 등록 -->
+    <insert id="insertGbExcPerRepList" parameterType="java.util.List">
+        INSERT ALL
+        <foreach collection="list" item="item">
+            INTO TB_EXC_REC_REP
+            (
+                EXC_PER_REP_SEQ,
+                EXC_PER_REP_NAME,
+                PROGRS_STAT_CODE,
+                EXC_DATE,
+                DEL_DATE,
+                DEL_ID
+            )
+            VALUES (
+                #{item.excPerRepSeq},
+                #{item.excPerRepName},
+                #{item.progrsStatCode},
+                TO_DATE(#{item.excDate}, 'YYYY'),
+                #{item.delDate},
+                #{item.delId}
+            )
+        </foreach>
+        SELECT * FROM dual
+    </insert>
+    <!-- 삭제된 수행실적신고 목록 삭제 테이블 등록 -->
+
+    <!-- TB_EXC_PER_REP 데이터 삭제 시작 -->
+    <delete id="deleteExcPerReps" parameterType="java.util.List">
+        DELETE
+        FROM TB_EXC_REC_REP
+        WHERE EXC_PER_REP_SEQ IN
+        <foreach collection="delSeqs" item="delSeq" open="(" separator="," close=")">
+            #{delSeq}
+        </foreach>
+    </delete>
+    <!-- TB_EXC_PER_REP 데이터 삭제 끝 -->
+
+    <!-- TB_EQPMN_REP 데이터 삭제 시작 -->
+    <!-- TB_EQPMN_REP 데이터 삭제 끝 -->
+
+    <!-- TB_PER_REP 데이터 삭제 시작 -->
+    <!-- TB_PER_REP 데이터 삭제 끝 -->
+    <!-- Batch Delete( SoftDelete 실제 삭제 ) 끝 -->
+</mapper>

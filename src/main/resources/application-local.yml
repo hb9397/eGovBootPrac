@@ -35,7 +35,7 @@ spring:
     username: dev_1
     password: 1234
 
-  datasource-meta:
+  datasource-batch:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     jdbc-url: jdbc:log4jdbc:oracle:thin:@127.0.0.1:1522:xe
     username: batch_dev_1
