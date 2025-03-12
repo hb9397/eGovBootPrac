@@ -4,7 +4,7 @@
 <mapper namespace="ExcPerRepMngtDAO">
 
     <!-- 수행실적신고 관리 목록 아이템   -->
-    <resultMap id="excPerRep" type="egovframework.let.epr.service.vo.ReqExcPerRepVO">
+    <resultMap id="excPerRep" type="egovframework.let.epr.service.vo.ResExcPerRepVO">
         <result property="excPerRepSeq" column="EXC_PER_REP_SEQ" />
         <result property="excPerRepName" column="EXC_PER_REP_NAME" />
         <result property="progrsStatCode" column="PROGRS_STAT_CODE" />
@@ -311,18 +311,61 @@
     </sql>
     <!-- SoftDelete 데이터 조회 조건 끝 -->
 
-    <!-- TB_EXC_PER_REP 에서 삭제할 데이터 검색 시작 -->
-    <select id="selectExcPerRepDelIsNotNullList" resultType="java.lang.String">
-        SELECT EXC_PER_REP_SEQ
+    <!-- TB_EXC_PER_REP 에서 삭제할 데이터 조회 시작 -->
+    <select id="selectExcPerRepDelIsNotNullList" resultMap="excPerRep">
+        SELECT
+            EXC_PER_REP_SEQ
+            , EXC_PER_REP_NAME
+            , PROGRS_STAT_CODE
+            , EXC_DATE
+            , DEL_DATE
+            , DEL_ID
         FROM TB_EXC_REC_REP
         WHERE 1=1
         <include refid="batchDeleteCondition"/>
     </select>
-    <!-- TB_EXC_PER_REP 에서 삭제할 데이터 검색 끝 -->
+    <!-- TB_EXC_PER_REP 에서 삭제할 데이터 조회 끝 -->
+
+    <!-- 삭제된 TB_EXC_PER_REP 목록 GB_TB_EXC_REC_REP (삭제 테이블)에 등록 시작-->
+    <insert id="insertGbExcPerRepList" parameterType="java.util.List">
+        INSERT ALL
+        <foreach collection="list" item="item">
+            INTO GB_TB_EXC_REC_REP
+            (
+                EXC_PER_REP_SEQ,
+                EXC_PER_REP_NAME,
+                PROGRS_STAT_CODE,
+                EXC_DATE,
+                DEL_DATE,
+                DEL_ID
+            )
+            VALUES (
+                #{item.excPerRepSeq},
+                #{item.excPerRepName},
+                #{item.progrsStatCode},
+                TO_DATE(#{item.excDate}, 'YYYY'),
+                #{item.delDate},
+                #{item.delId}
+            )
+        </foreach>
+        SELECT * FROM dual
+    </insert>
+    <!-- 삭제된 TB_EXC_PER_REP 목록 GB_TB_EXC_REC_REP (삭제 테이블)에 등록 끝-->
+
+    <!-- GB_TB_EXC_REC_REP 목록 보관 후, 삭제 시작 -->
+    <!-- GB_TB_EXC_REC_REP 목록 보관 후, 삭제 끝 -->
 
     <!-- TB_EQPMN_REP 에서 삭제할 데이터 검색 시작 -->
-    <select id="selectEQPMNREPDelIsNotNullList" resultType="java.lang.String">
-        SELECT EXC_PER_REP_SEQ
+    <select id="selectEQPMNREPDelIsNotNullList" resultMap="eqpmnRep">
+        SELECT
+            EXC_PER_REP_SEQ
+            , EQPMN_NO
+            , EQPMN_NAME
+            , STNDRD
+            , REG_NO
+            , GRAD_CODE
+            , DEL_DATE
+            , DEL_ID
         FROM TB_EQPMN_REP
         WHERE 1=1
         <include refid="batchDeleteCondition"/>
@@ -330,29 +373,22 @@
     <!-- TB_EQPMN_REP 에서 삭제할 데이터 검색 끝 -->
 
     <!-- TB_PER_REP 에서 삭제할 데이터 검색 시작 -->
-    <select id="selectPERREPDelIsNotNullList" resultType="java.util.List">
-        SELECT EXC_PER_REP_SEQ
+    <select id="selectPERREPDelIsNotNullList" resultMap="perRep">
+        SELECT
+            EXC_PER_REP_SEQ
+            , PER_NO
+            , SERVC_NAME
+            , SERVC_SE_CODE
+            , CNTRCT_AMOUNT
+            , CHARGER_NAME
+            , SERVC
+            , DEL_DATE
+            , DEL_ID
         FROM TB_PRE_REP
         WHERE 1=1
         <include refid="batchDeleteCondition"/>
     </select>
     <!-- TB_PER_REP 에서 삭제할 데이터 검색 끝 -->
+    <!-- Batch Delete ( SoftDelete 실제 삭제 ) 데이터 조회 끝 -->
 
-    <!-- TB_EXC_PER_REP 데이터 삭제 시작 -->
-    <delete id="deleteExcPerReps" parameterType="java.util.List">
-        DELETE
-        FROM TB_EXC_REC_REP
-        WHERE EXC_PER_REP_SEQ IN
-        <foreach collection="delSeqs" item="delSeq" open="(" separator="," close=")">
-            #{delSeq}
-        </foreach>
-    </delete>
-    <!-- TB_EXC_PER_REP 데이터 삭제 끝 -->
-
-    <!-- TB_EQPMN_REP 데이터 삭제 시작 -->
-    <!-- TB_EQPMN_REP 데이터 삭제 끝 -->
-
-    <!-- TB_PER_REP 데이터 삭제 시작 -->
-    <!-- TB_PER_REP 데이터 삭제 끝 -->
-    <!-- Batch Delete( SoftDelete 실제 삭제 ) 끝 -->
 </mapper>
