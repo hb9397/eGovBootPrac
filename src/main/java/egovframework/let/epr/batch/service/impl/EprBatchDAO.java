@@ -24,7 +24,7 @@ import egovframework.let.epr.service.vo.ResExcPerRepVO;
  * --- 사용안함 ---
  **/
 
-@Repository("EprBatchDAO")
+/*@Repository("EprBatchDAO")
 public class EprBatchDAO extends EgovComAbstractDAO {
 
 	public EprBatchDAO(@Qualifier("batchSqlSession") SqlSessionFactory batchSqlSession) {
@@ -40,4 +40,4 @@ public class EprBatchDAO extends EgovComAbstractDAO {
 		paramMap.put("delData", delData);
 		return delete("EprBatchDAO.deleteExcPerReps", paramMap);
 	}
-}
+}*/
