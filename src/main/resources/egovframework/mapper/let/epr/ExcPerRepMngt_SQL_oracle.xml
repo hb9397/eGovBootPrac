@@ -221,7 +221,7 @@
             #{excPerRepSeq}
             , #{eqpmnNo}
             , #{eqpmnName}
-            , EQPMN_REG_NO.NEXTVAL
+            , EQPMN_NO.NEXTVAL
             , #{stndrd}
             , #{gradeCode}
             , SYSDATE
