@@ -246,6 +246,7 @@
     <!-- 수행실적 신고 상세 장비목록(체크항목) 삭제처리(SoftDelete) 끝 -->
 
     <!-- 수행실적 신고 상세 중 실적등록 시작 -->
+    <!-- 수행실적 신고 상세 중 실적등록 시작 -->
     <insert id="insertPerRep" parameterType="egovframework.let.epr.service.vo.ReqPerRepVO">
         INSERT INTO TB_PER_REP
         (
@@ -304,8 +305,8 @@
     <!-- 수행실적 신고 진행상태 변경 ( 작성중 -> 접수대기 ) 끝 -->
 
     <!-- Batch Delete ( SoftDelete 실제 삭제 ) 시작 -->
-    <!-- SoftDelete 데이터 조회 조건 시작 -->
-    <sql id="batchDeleteCondition">
+    <!-- SoftDelete 된 데이터의 조건 시작 -->
+    <sql id="softDeletedDataCondition">
         AND DEL_DATE IS NOT NULL
         AND DEL_ID IS NOT NULL
     </sql>
@@ -322,7 +323,7 @@
             , DEL_ID
         FROM TB_EXC_REC_REP
         WHERE 1=1
-        <include refid="batchDeleteCondition"/>
+        <include refid="softDeletedDataCondition"/>
     </select>
     <!-- TB_EXC_PER_REP 에서 삭제할 데이터 조회 끝 -->
 
@@ -343,8 +344,12 @@
                 #{item.excPerRepSeq},
                 #{item.excPerRepName},
                 #{item.progrsStatCode},
-                TO_DATE(#{item.excDate}, 'YYYY'),
-                #{item.delDate},
+                CASE
+                    WHEN REGEXP_LIKE(#{item.excDate}, '^[0-9]{4}$')
+                        THEN TO_DATE(#{item.excDate}, 'YYYY')
+                        ELSE TO_DATE(#{item.excDate}, 'YYYY-MM-DD HH24:MI:SS')
+                END,
+                TO_DATE(#{item.delDate}, 'YYYY-MM-DD HH24:MI:SS'),
                 #{item.delId}
             )
         </foreach>
@@ -352,8 +357,40 @@
     </insert>
     <!-- 삭제된 TB_EXC_PER_REP 목록 GB_TB_EXC_REC_REP (삭제 테이블)에 등록 끝-->
 
-    <!-- GB_TB_EXC_REC_REP 목록 보관 후, 삭제 시작 -->
-    <!-- GB_TB_EXC_REC_REP 목록 보관 후, 삭제 끝 -->
+    <!-- GB_TB_EXC_REC_REP 로 softDeleted 데이터 옮긴 후, TB_EXC_REC_REP 에서 삭제 시작 -->
+    <delete id="deleteExcPerReps" parameterType="java.util.List">
+        DELETE
+        FROM TB_EXC_REC_REP
+        WHERE
+        EXC_PER_REP_SEQ IN
+        <foreach collection="deletedSeqList" item="deletedSeq" open="(" separator="," close=")">
+            #{deletedSeq}
+        </foreach>
+        <include refid="softDeletedDataCondition"/>
+    </delete>
+    <!-- GB_TB_EXC_REC_REP 로 softDeleted 데이터 옮긴 후, TB_EXC_REC_REP 에서 삭제 시작 -->
+
+    <!-- GB_TB_EXC_REC_REP 도 현재 기준으로 N 이전이면 삭제할 데이터 조회 시작 -->
+    <select id="selectDeletingGbExcPerReps" resultType="java.lang.String">
+        SELECT
+            EXC_PER_REP_SEQ
+        FROM GB_TB_EXC_REC_REP
+        WHERE 1=1
+        <![CDATA[ AND DEL_DATE <= ADD_MONTHS(SYSDATE, -12) ]]>
+    </select>
+    <!-- GB_TB_EXC_REC_REP 도 현재 기준으로 N 이전이면 삭제할 데이터 조회  끝 -->
+
+    <!-- GB_TB_EXC_REC_REP 에서 1년 이상 지난 데이터 삭제 시작 -->
+    <delete id="deleteGbExcPerReps" parameterType="java.util.List">
+        DELETE
+        FROM GB_TB_EXC_REC_REP
+        WHERE
+        EXC_PER_REP_SEQ IN
+        <foreach collection="list"  item="deletedSeq" open="(" separator="," close=")">
+            #{deletedSeq}
+        </foreach>
+    </delete>
+    <!-- GB_TB_EXC_REC_REP 에서 1년 이상 지난 데이터 삭제 끝 -->
 
     <!-- TB_EQPMN_REP 에서 삭제할 데이터 검색 시작 -->
     <select id="selectEQPMNREPDelIsNotNullList" resultMap="eqpmnRep">
@@ -368,7 +405,7 @@
             , DEL_ID
         FROM TB_EQPMN_REP
         WHERE 1=1
-        <include refid="batchDeleteCondition"/>
+        <include refid="softDeletedDataCondition"/>
     </select>
     <!-- TB_EQPMN_REP 에서 삭제할 데이터 검색 끝 -->
 
@@ -386,7 +423,7 @@
             , DEL_ID
         FROM TB_PRE_REP
         WHERE 1=1
-        <include refid="batchDeleteCondition"/>
+        <include refid="softDeletedDataCondition"/>
     </select>
     <!-- TB_PER_REP 에서 삭제할 데이터 검색 끝 -->
     <!-- Batch Delete ( SoftDelete 실제 삭제 ) 데이터 조회 끝 -->

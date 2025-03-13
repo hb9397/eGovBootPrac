@@ -5,7 +5,9 @@ import egovframework.let.epr.service.vo.*;
 
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository("ExcPerRepMngtDAO")
 public class ExcPerRepMngtDAO extends EgovComAbstractDAO {
@@ -58,4 +60,17 @@ public class ExcPerRepMngtDAO extends EgovComAbstractDAO {
         update("ExcPerRepMngtDAO.updateStatusWritingToWait", reqExcPerRepVO);
     }
 
+    public int insertGbExcPerRepList(List<ResExcPerRepVO> deletedData) throws Exception{
+        return insert("ExcPerRepMngtDAO.insertGbExcPerRepList", deletedData);
+    }
+
+    public int deleteExcPerReps(List<String> deletedSeqList) throws Exception{
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("deletedSeqList", deletedSeqList);
+        return delete("ExcPerRepMngtDAO.deleteExcPerReps", paramMap);
+    }
+
+    public int deleteGbExcPerReps(List<String> deletedSeqList) throws Exception{
+        return delete("ExcPerRepMngtDAO.deleteGbExcPerReps", deletedSeqList);
+    }
 }
