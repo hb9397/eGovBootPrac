@@ -20,8 +20,10 @@ public class SoftDeleteSchedule {
 	private final JobLauncher jobLauncher;
 	private final JobRegistry jobRegistry;
 
-	//@Scheduled(cron = "0 */53 * * * *", zone = "Asia/Seoul")
-	@Scheduled(cron = "10 * * * * *", zone = "Asia/Seoul")
+	/** 매분의 10초 마다 시행 -> 테스트용 **/
+	//@Scheduled(cron = "10 * * * * *", zone = "Asia/Seoul")
+	/** 새벽 2시마다 시행 **/
+	@Scheduled(cron = "0 0 2 * * *", zone = "Asia/Seoul")
 	public void runDeleteExcPerRepsJob() throws Exception {
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
